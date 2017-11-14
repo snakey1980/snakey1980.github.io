@@ -1,0 +1,5 @@
+baseURL = "http://snakey1980.github.io/"
+languageCode = "en-us"
+title = "snakey1980's GitHub Pages"
+publishDir = "."
+theme = "minimo"
