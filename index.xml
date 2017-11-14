@@ -17,7 +17,7 @@
       <pubDate>Mon, 13 Nov 2017 19:49:44 -0500</pubDate>
       
       <guid>http://snakey1980.github.io/posts/secret-santa/</guid>
-      <description>Picking names from a hat The first time I played Secret Santa we assigned givers/receivers like this:
+      <description>Names in a hat The first time I played Secret Santa we assigned givers/receivers like this:
  Players put their name in a hat Players take turn to pull names out. If you pull your own name, put it back and pull again.  So this is how I tried to implement it. Here we use plain integers as the players:
 fun draw(players: Set&amp;lt;Int&amp;gt;) : List&amp;lt;Pair&amp;lt;Int, Int&amp;gt;&amp;gt; { if (players.</description>
     </item>

@@ -4,12 +4,12 @@
 <head>
   <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<meta name='description' content='Picking names from a hat The first time I played Secret Santa we assigned givers/receivers like this:
+<meta name='description' content='Names in a hat The first time I played Secret Santa we assigned givers/receivers like this:
  Players put their name in a hat Players take turn to pull names out. If you pull your own name, put it back and pull again.  So this is how I tried to implement it. Here we use plain integers as the players:
 fun draw(players: Set&lt;Int&gt;) : List&lt;Pair&lt;Int, Int&gt;&gt; { if (players.'>
 
 <meta property='og:title' content='Secret Santa • snakey1980&#39;s GitHub Pages'>
-<meta property='og:description' content='Picking names from a hat The first time I played Secret Santa we assigned givers/receivers like this:
+<meta property='og:description' content='Names in a hat The first time I played Secret Santa we assigned givers/receivers like this:
  Players put their name in a hat Players take turn to pull names out. If you pull your own name, put it back and pull again.  So this is how I tried to implement it. Here we use plain integers as the players:
 fun draw(players: Set&lt;Int&gt;) : List&lt;Pair&lt;Int, Int&gt;&gt; { if (players.'>
 <meta property='og:url' content='http://snakey1980.github.io/posts/secret-santa/'>
@@ -89,7 +89,7 @@ fun draw(players: Set&lt;Int&gt;) : List&lt;Pair&lt;Int, Int&gt;&gt; { if (playe
     <div class='entry-content'>
   
 
-<h4 id="picking-names-from-a-hat">Picking names from a hat</h4>
+<h4 id="names-in-a-hat">Names in a hat</h4>
 
 <p>The first time I played Secret Santa we assigned givers/receivers like this:</p>
 
@@ -151,40 +151,65 @@ fun draw(players: Set&lt;Int&gt;) : List&lt;Pair&lt;Int, Int&gt;&gt; { if (playe
 }
 </code></pre>
 
-<p>This way always seems to stop, so we are doing slightly better:</p>
+<p>This always seems to stop, so we are doing slightly better:</p>
 
 <pre><code>(1..100_000).forEach { SecretSanta().draw2(setOf(1, 2, 3, 4)) }
 </code></pre>
 
-<p>With 4 players, there aren&rsquo;t many valid assignments.  We can list them:</p>
+<p>With 4 players, there aren&rsquo;t many valid assignments.  We can list out all the permutations and pick out the 9 valid ones:</p>
 
-<pre><code>           ASSIGNMENT            VALID?
+<pre><code>           PERMUTATION            VALID SECRET SANTA ASSIGNMENT?
 
-[(1, 1), (2, 2), (3, 3), (4, 4)]   no
-[(1, 1), (2, 2), (3, 4), (4, 3)]   no
-[(1, 1), (2, 3), (3, 2), (4, 4)]   no
-[(1, 1), (2, 3), (3, 4), (4, 2)]   no
-[(1, 1), (2, 4), (3, 2), (4, 3)]   no
-[(1, 1), (2, 4), (3, 3), (4, 2)]   no
-[(1, 2), (2, 1), (3, 3), (4, 4)]   no
-[(1, 2), (2, 1), (3, 4), (4, 3)]   yes
-[(1, 2), (2, 3), (3, 1), (4, 4)]   no
-[(1, 2), (2, 3), (3, 4), (4, 1)]   yes
-[(1, 2), (2, 4), (3, 1), (4, 3)]   yes
-[(1, 2), (2, 4), (3, 3), (4, 1)]   no
-[(1, 3), (2, 1), (3, 2), (4, 4)]   no
-[(1, 3), (2, 1), (3, 4), (4, 2)]   yes
-[(1, 3), (2, 2), (3, 1), (4, 4)]   no
-[(1, 3), (2, 2), (3, 4), (4, 1)]   no
-[(1, 3), (2, 4), (3, 1), (4, 2)]   yes
-[(1, 3), (2, 4), (3, 2), (4, 1)]   yes
-[(1, 4), (2, 1), (3, 2), (4, 3)]   yes
-[(1, 4), (2, 1), (3, 3), (4, 2)]   no
-[(1, 4), (2, 2), (3, 1), (4, 3)]   no
-[(1, 4), (2, 2), (3, 3), (4, 1)]   no
-[(1, 4), (2, 3), (3, 1), (4, 2)]   yes
-[(1, 4), (2, 3), (3, 2), (4, 1)]   yes
+[(1, 1), (2, 2), (3, 3), (4, 4)]              no
+[(1, 1), (2, 2), (3, 4), (4, 3)]              no
+[(1, 1), (2, 3), (3, 2), (4, 4)]              no
+[(1, 1), (2, 3), (3, 4), (4, 2)]              no
+[(1, 1), (2, 4), (3, 2), (4, 3)]              no
+[(1, 1), (2, 4), (3, 3), (4, 2)]              no
+[(1, 2), (2, 1), (3, 3), (4, 4)]              no
+[(1, 2), (2, 1), (3, 4), (4, 3)]              yes
+[(1, 2), (2, 3), (3, 1), (4, 4)]              no
+[(1, 2), (2, 3), (3, 4), (4, 1)]              yes
+[(1, 2), (2, 4), (3, 1), (4, 3)]              yes
+[(1, 2), (2, 4), (3, 3), (4, 1)]              no
+[(1, 3), (2, 1), (3, 2), (4, 4)]              no
+[(1, 3), (2, 1), (3, 4), (4, 2)]              yes
+[(1, 3), (2, 2), (3, 1), (4, 4)]              no
+[(1, 3), (2, 2), (3, 4), (4, 1)]              no
+[(1, 3), (2, 4), (3, 1), (4, 2)]              yes
+[(1, 3), (2, 4), (3, 2), (4, 1)]              yes
+[(1, 4), (2, 1), (3, 2), (4, 3)]              yes
+[(1, 4), (2, 1), (3, 3), (4, 2)]              no
+[(1, 4), (2, 2), (3, 1), (4, 3)]              no
+[(1, 4), (2, 2), (3, 3), (4, 1)]              no
+[(1, 4), (2, 3), (3, 1), (4, 2)]              yes
+[(1, 4), (2, 3), (3, 2), (4, 1)]              yes
 </code></pre>
+
+<p>A good test would be to see if our procedure return each of the nine, and that it returns each one one ninth of the time:</p>
+
+<pre><code>val patterns = mutableMapOf&lt;List&lt;Pair&lt;Int, Int&gt;&gt;, Int&gt;()
+    (1..100_000).forEach {
+        val pattern = SecretSanta().draw2(setOf(1, 2, 3, 4))
+        patterns[pattern] = patterns.getOrDefault(pattern, 0) + 1
+    }
+    patterns.entries.sortedByDescending { it.value }.forEach { println(it) }
+</code></pre>
+
+<p>We run it 100,000 times and would expect each pattern to occur around 11111 times.  But:</p>
+
+<pre><code>[(1, 4), (2, 1), (3, 2), (4, 3)]=19241
+[(1, 2), (2, 4), (3, 1), (4, 3)]=13004
+[(1, 2), (2, 1), (3, 4), (4, 3)]=12943
+[(1, 3), (2, 4), (3, 2), (4, 1)]=9775
+[(1, 4), (2, 3), (3, 1), (4, 2)]=9720
+[(1, 4), (2, 3), (3, 2), (4, 1)]=9685
+[(1, 3), (2, 4), (3, 1), (4, 2)]=9591
+[(1, 3), (2, 1), (3, 4), (4, 2)]=9532
+[(1, 2), (2, 3), (3, 4), (4, 1)]=6509
+</code></pre>
+
+<p>The algorithm is biased.  To see why</p>
 
 </div>
 
