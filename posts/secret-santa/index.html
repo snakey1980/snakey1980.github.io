@@ -4,14 +4,14 @@
 <head>
   <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<meta name='description' content='Secret Santa I wrote a program to assign givers and receivers in a game of Secret Santa and learnt a few things along the way.
-Generating assignments The first time I played Secret Santa we assigned givers like this:
- Players put their name in a hat Players take turn to pull names out. If you pull your own name, put it back and pull again.  So this is how I tried to implement it.'>
+<meta name='description' content='Picking names from a hat The first time I played Secret Santa we assigned givers/receivers like this:
+ Players put their name in a hat Players take turn to pull names out. If you pull your own name, put it back and pull again.  So this is how I tried to implement it. Here we use plain integers as the players:
+fun draw(players: Set&lt;Int&gt;) : List&lt;Pair&lt;Int, Int&gt;&gt; { if (players.'>
 
 <meta property='og:title' content='Secret Santa • snakey1980&#39;s GitHub Pages'>
-<meta property='og:description' content='Secret Santa I wrote a program to assign givers and receivers in a game of Secret Santa and learnt a few things along the way.
-Generating assignments The first time I played Secret Santa we assigned givers like this:
- Players put their name in a hat Players take turn to pull names out. If you pull your own name, put it back and pull again.  So this is how I tried to implement it.'>
+<meta property='og:description' content='Picking names from a hat The first time I played Secret Santa we assigned givers/receivers like this:
+ Players put their name in a hat Players take turn to pull names out. If you pull your own name, put it back and pull again.  So this is how I tried to implement it. Here we use plain integers as the players:
+fun draw(players: Set&lt;Int&gt;) : List&lt;Pair&lt;Int, Int&gt;&gt; { if (players.'>
 <meta property='og:url' content='http://snakey1980.github.io/posts/secret-santa/'>
 <meta property='og:site_name' content='snakey1980&#39;s GitHub Pages'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:published_time' content='2017-11-13T19:49:44-05:00'/><meta property='article:modified_time' content='2017-11-13T19:49:44-05:00'/><meta name='twitter:card' content='summary'>
@@ -89,26 +89,23 @@ Generating assignments The first time I played Secret Santa we assigned givers l
     <div class='entry-content'>
   
 
-<h1 id="secret-santa">Secret Santa</h1>
+<h4 id="picking-names-from-a-hat">Picking names from a hat</h4>
 
-<p>I wrote a program to assign givers and receivers in a game of Secret Santa and learnt a few things along the way.</p>
-
-<h2 id="generating-assignments">Generating assignments</h2>
-
-<p>The first time I played Secret Santa we assigned givers like this:</p>
+<p>The first time I played Secret Santa we assigned givers/receivers like this:</p>
 
 <ol>
 <li>Players put their name in a hat</li>
 <li>Players take turn to pull names out.  If you pull your own name, put it back and pull again.</li>
 </ol>
 
-<p>So this is how I tried to implement it.  Here we use plain integers as the players, 1 thru n:</p>
+<p>So this is how I tried to implement it.  Here we use plain integers as the players:</p>
 
-<pre><code>internal fun draw(n: Int) : List&lt;Pair&lt;Int, Int&gt;&gt; {
-    val pot = (1..n).toMutableList()
+<pre><code>fun draw(players: Set&lt;Int&gt;) : List&lt;Pair&lt;Int, Int&gt;&gt; {
+    if (players.size &lt; 4) throw IllegalArgumentException()
+    val pot = players.toMutableList()
     Collections.shuffle(pot)
     val result = mutableListOf&lt;Pair&lt;Int, Int&gt;&gt;()
-    (1..n).forEach {
+    players.forEach {
         while (pot[0] == it) {
             Collections.shuffle(pot)
         }
@@ -120,11 +117,74 @@ Generating assignments The first time I played Secret Santa we assigned givers l
 
 <p>On a first try it seems to work:</p>
 
-<pre><code>println(SecretSanta().draw(4)) 
-// prints [(1, 4), (2, 3), (3, 1), (4, 2)]
+<pre><code>println(SecretSanta().draw(setOf(1, 2, 3, 4)))
+// printed [(1, 4), (2, 1), (3, 2), (4, 3)]
 </code></pre>
 
-<p>but try it a few times and, on some runs it will never finish.</p>
+<p>but try it a few times and, on some runs, it will never finish.  It&rsquo;s not hard to see why &ndash; it&rsquo;s possible that when number 4 comes to choose, it finds only itself in the pot and reshuffles uselessly forever.</p>
+
+<p>This could happen in a real names-in-a-hat situation too.  When it does, there&rsquo;s nothing to be done but to put all the names back in and try again, so that&rsquo;s what I tried next:</p>
+
+<pre><code>fun draw2(players: Set&lt;Int&gt;) : List&lt;Pair&lt;Int, Int&gt;&gt; {
+    class BadPotException : RuntimeException()
+    if (players.size &lt; 4) throw IllegalArgumentException()
+    while (true) {
+        val pot = players.toMutableList()
+        Collections.shuffle(pot)
+        try {
+            val result = mutableListOf&lt;Pair&lt;Int, Int&gt;&gt;()
+            players.forEach {
+                if (pot.size == 1 &amp;&amp; pot[0] == it) {
+                    throw BadPotException()
+                }
+                while (pot[0] == it) {
+                    Collections.shuffle(pot)
+                }
+                result.add(Pair(it, pot.removeAt(0)))
+            }
+            return result
+        }
+        catch (e: BadPotException) {
+            // ok, try again
+        }
+    }
+}
+</code></pre>
+
+<p>This way always seems to stop, so we are doing slightly better:</p>
+
+<pre><code>(1..100_000).forEach { SecretSanta().draw2(setOf(1, 2, 3, 4)) }
+</code></pre>
+
+<p>With 4 players, there aren&rsquo;t many valid assignments.  We can list them:</p>
+
+<pre><code>           ASSIGNMENT            VALID?
+
+[(1, 1), (2, 2), (3, 3), (4, 4)]   no
+[(1, 1), (2, 2), (3, 4), (4, 3)]   no
+[(1, 1), (2, 3), (3, 2), (4, 4)]   no
+[(1, 1), (2, 3), (3, 4), (4, 2)]   no
+[(1, 1), (2, 4), (3, 2), (4, 3)]   no
+[(1, 1), (2, 4), (3, 3), (4, 2)]   no
+[(1, 2), (2, 1), (3, 3), (4, 4)]   no
+[(1, 2), (2, 1), (3, 4), (4, 3)]   yes
+[(1, 2), (2, 3), (3, 1), (4, 4)]   no
+[(1, 2), (2, 3), (3, 4), (4, 1)]   yes
+[(1, 2), (2, 4), (3, 1), (4, 3)]   yes
+[(1, 2), (2, 4), (3, 3), (4, 1)]   no
+[(1, 3), (2, 1), (3, 2), (4, 4)]   no
+[(1, 3), (2, 1), (3, 4), (4, 2)]   yes
+[(1, 3), (2, 2), (3, 1), (4, 4)]   no
+[(1, 3), (2, 2), (3, 4), (4, 1)]   no
+[(1, 3), (2, 4), (3, 1), (4, 2)]   yes
+[(1, 3), (2, 4), (3, 2), (4, 1)]   yes
+[(1, 4), (2, 1), (3, 2), (4, 3)]   yes
+[(1, 4), (2, 1), (3, 3), (4, 2)]   no
+[(1, 4), (2, 2), (3, 1), (4, 3)]   no
+[(1, 4), (2, 2), (3, 3), (4, 1)]   no
+[(1, 4), (2, 3), (3, 1), (4, 2)]   yes
+[(1, 4), (2, 3), (3, 2), (4, 1)]   yes
+</code></pre>
 
 </div>
 
