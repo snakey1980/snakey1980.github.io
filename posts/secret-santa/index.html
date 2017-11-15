@@ -251,7 +251,7 @@ patterns.entries.sortedByDescending { it.value }.forEach { println(it) }
 } 
 </code></pre>
 
-<p>We are generating permutations of the players and rejecting them if they are not &ldquo;derangements&rdquo; (<a href="https://en.wikipedia.org/wiki/Derangement">https://en.wikipedia.org/wiki/Derangement</a>).  There were 9 derangements of 4 players.  Let&rsquo;s see how many we get for 5, 6 and 7 players:</p>
+<p>We are generating permutations of the players and rejecting them if they are not <a href="https://en.wikipedia.org/wiki/Derangement">derangements</a>.  There were 9 derangements of 4 players.  Let&rsquo;s see how many we get for 5, 6 and 7 players:</p>
 
 <pre><code>for (i in 5..7) {
     val patterns = mutableSetOf&lt;List&lt;Pair&lt;Int, Int&gt;&gt;&gt;()
@@ -285,7 +285,7 @@ Found 1334961 derangements of 10 elements
 Found 14684570 derangements of 11 elements
 </code></pre>
 
-<p>I&rsquo;m using a library Steinhaus–Johnson–Trotter algorithm to generate permutations and it gets slow after 11 but we can see the sequence continuing at <a href="https://oeis.org/A000166">https://oeis.org/A000166</a>.</p>
+<p>I&rsquo;m using a library Steinhaus–Johnson–Trotter algorithm to generate permutations and it gets slow after 11 but we can see the sequence continuing in the <a href="https://oeis.org/A000166">OEIS article</a>.</p>
 
 <p>We have not been tracking how many times we had to shuffle.  We can assume it&rsquo;s not too many times since, so far, we were able to perform draws quite quickly.  But will we have to shuffle more as we have more players?  Counting the shuffles and timing gives:</p>
 
@@ -298,7 +298,7 @@ Found 14684570 derangements of 11 elements
 10000000 players took 158218ms and performed 6 shuffles
 </code></pre>
 
-<p>We don&rsquo;t have to shuffle more, but shuffling itself takes longer as we add players.  On the last one my laptop lost its mind.  So the lack of shuffling suggests that derangements remain fairly common even as the number of permutations goes through the roof (there are n! permutations of n elements).  It turns out (see <a href="https://en.wikipedia.org/wiki/Derangement">https://en.wikipedia.org/wiki/Derangement</a> again) that the ratio of permutations to derangements tends to 1/e as n goes to infinity.  So we don&rsquo;t need to worry about that.</p>
+<p>We don&rsquo;t have to shuffle more, but shuffling itself takes longer as we add players.  On the last one my laptop lost its mind.  So the lack of shuffling suggests that derangements remain fairly common even as the number of permutations goes through the roof (there are n! permutations of n elements).  <a href="hthttps://en.wikipedia.org/wiki/Derangement#Limit_of_ratio_of_derangement_to_permutation_as_n_approaches_.E2.88.9E">It turns out</a> that the ratio of permutations to derangements tends to 1/e as n approaches infinity.  So we don&rsquo;t need to worry about that.</p>
 
 <h4 id="cycles">Cycles</h4>
 
@@ -409,6 +409,8 @@ Eric &lt;- Laine &lt;- Elron &lt;- John
 </code></pre>
 
 <p>Close enough!</p>
+
+<p>My Secret Santa program is <a href="https://github.com/snakey1980/secretsanta">here</a></p>
 
 </div>
 
