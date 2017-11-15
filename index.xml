@@ -6,21 +6,9 @@
     <description>Recent content on snakey1980&#39;s GitHub Pages</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 13 Nov 2017 19:49:44 -0500</lastBuildDate>
     
 	<atom:link href="http://snakey1980.github.io/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Secret Santa</title>
-      <link>http://snakey1980.github.io/posts/secret-santa/</link>
-      <pubDate>Mon, 13 Nov 2017 19:49:44 -0500</pubDate>
-      
-      <guid>http://snakey1980.github.io/posts/secret-santa/</guid>
-      <description>Everything I never knew about Secret Santa&amp;hellip;
-Names in a hat The first time I played Secret Santa we assigned givers/receivers like this:
- Players put their name in a hat Players take turn to shake the hat and pick a name out at random. If you pull your own name, put it back and pull again.  So when I decided to program it this is how I tried to do it.</description>
-    </item>
     
   </channel>
 </rss>
