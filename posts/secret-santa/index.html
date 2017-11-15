@@ -4,14 +4,14 @@
 <head>
   <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<meta name='description' content='Everything I never knew about Secret Santa&hellip;
-Names in a hat The first time I played Secret Santa we assigned givers/receivers like this:
- Players put their name in a hat Players take turn to shake the hat and pick a name out at random. If you pull your own name, put it back and pull again.  So when I decided to program it this is how I tried to do it.'>
+<meta name='description' content='Things I never knew I never knew about Secret Santa&hellip;
+Names in a hat The first time I played Secret Santa we assigned givers and receivers like so:
+ Put the names of all the players in a hat Take turns to shake the hat and pick a name out at random. If you pick your own name, put it back and pick again.  So when I decided to program it this is how I tried to do it.'>
 
 <meta property='og:title' content='Secret Santa • snakey1980&#39;s GitHub Pages'>
-<meta property='og:description' content='Everything I never knew about Secret Santa&hellip;
-Names in a hat The first time I played Secret Santa we assigned givers/receivers like this:
- Players put their name in a hat Players take turn to shake the hat and pick a name out at random. If you pull your own name, put it back and pull again.  So when I decided to program it this is how I tried to do it.'>
+<meta property='og:description' content='Things I never knew I never knew about Secret Santa&hellip;
+Names in a hat The first time I played Secret Santa we assigned givers and receivers like so:
+ Put the names of all the players in a hat Take turns to shake the hat and pick a name out at random. If you pick your own name, put it back and pick again.  So when I decided to program it this is how I tried to do it.'>
 <meta property='og:url' content='http://snakey1980.github.io/posts/secret-santa/'>
 <meta property='og:site_name' content='snakey1980&#39;s GitHub Pages'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:published_time' content='2017-11-13T19:49:44-05:00'/><meta property='article:modified_time' content='2017-11-13T19:49:44-05:00'/><meta name='twitter:card' content='summary'>
@@ -89,15 +89,15 @@ Names in a hat The first time I played Secret Santa we assigned givers/receivers
     <div class='entry-content'>
   
 
-<p>Everything I never knew about Secret Santa&hellip;</p>
+<p>Things I never knew I never knew about Secret Santa&hellip;</p>
 
 <h4 id="names-in-a-hat">Names in a hat</h4>
 
-<p>The first time I played Secret Santa we assigned givers/receivers like this:</p>
+<p>The first time I played Secret Santa we assigned givers and receivers like so:</p>
 
 <ol>
-<li>Players put their name in a hat</li>
-<li>Players take turn to shake the hat and pick a name out at random.  If you pull your own name, put it back and pull again.</li>
+<li>Put the names of all the players in a hat</li>
+<li>Take turns to shake the hat and pick a name out at random.  If you pick your own name, put it back and pick again.</li>
 </ol>
 
 <p>So when I decided to program it this is how I tried to do it.  Here we use plain integers as the players:</p>
@@ -173,7 +173,7 @@ Names in a hat The first time I played Secret Santa we assigned givers/receivers
 [(1, 4), (2, 3), (3, 2), (4, 1)]
 </code></pre>
 
-<p>A good test would be to see if our procedure returns each of the nine, and that it returns each one one ninth of the time:</p>
+<p>A good test would be to see if our procedure returns each of the nine, and that it returns each one <sup>1</sup>&frasl;<sub>9</sub> of the time:</p>
 
 <pre><code>val patterns = mutableMapOf&lt;List&lt;Pair&lt;Int, Int&gt;&gt;, Int&gt;()
 (1..100_000).forEach {
@@ -235,6 +235,8 @@ patterns.entries.sortedByDescending { it.value }.forEach { println(it) }
 [(1, 2), (2, 1), (3, 4), (4, 3)]=11006
 </code></pre>
 
+<p>You would never think to do it this way in a real names-in-a-hat situation but you&rsquo;d need to if you wanted to be fair.</p>
+
 <h4 id="derangements">Derangements</h4>
 
 <p>At this point let&rsquo;s forget the hat metaphor:</p>
@@ -287,16 +289,16 @@ Found 14684570 derangements of 11 elements
 
 <p>We have not been tracking how many times we had to shuffle.  We can assume it&rsquo;s not too many times since, so far, we were able to perform draws quite quickly.  But will we have to shuffle more as we have more players?  Counting the shuffles and timing gives:</p>
 
-<pre><code>10 players took 29ms and performed 7 shuffles
-100 players took 0ms and performed 1 shuffles
-1000 players took 9ms and performed 5 shuffles
-10000 players took 36ms and performed 3 shuffles
-100000 players took 172ms and performed 4 shuffles
-1000000 players took 1822ms and performed 2 shuffles
+<pre><code>      10 players took     29ms and performed 7 shuffles
+     100 players took      0ms and performed 1 shuffles
+    1000 players took      9ms and performed 5 shuffles
+   10000 players took     36ms and performed 3 shuffles
+  100000 players took    172ms and performed 4 shuffles
+ 1000000 players took   1822ms and performed 2 shuffles
 10000000 players took 158218ms and performed 6 shuffles
 </code></pre>
 
-<p>We don&rsquo;t have to shuffle more at all, but shuffling itself must take longer, as we would expect.  On the last one my laptop lost its mind.  So the lack of shuffling suggests that derangements remain fairly common even as the number of permutations goes through the roof (there are n! permutations of n elements).  It turns out (see <a href="https://en.wikipedia.org/wiki/Derangement">https://en.wikipedia.org/wiki/Derangement</a> again) that the ratio of permutations to derangements tends to 1/e as n goes to infinity.  So we don&rsquo;t need to worry about that.</p>
+<p>We don&rsquo;t have to shuffle more, but shuffling itself takes longer as we add players.  On the last one my laptop lost its mind.  So the lack of shuffling suggests that derangements remain fairly common even as the number of permutations goes through the roof (there are n! permutations of n elements).  It turns out (see <a href="https://en.wikipedia.org/wiki/Derangement">https://en.wikipedia.org/wiki/Derangement</a> again) that the ratio of permutations to derangements tends to 1/e as n goes to infinity.  So we don&rsquo;t need to worry about that.</p>
 
 <h4 id="cycles">Cycles</h4>
 
@@ -324,7 +326,7 @@ Eric &lt;- Laine &lt;- Elron &lt;- John
 <li>It&rsquo;s possible we could have had 8 pairs</li>
 </ol>
 
-<p>First let&rsquo;s look at this particular graph.  So how likely was the 3 component to happen?  To find the real answer we&rsquo;d have to look at all derangements of 16 elements and there are 7,697,064,251,745 of those.  Instead I sampled 10 million at random:</p>
+<p>First let&rsquo;s look at this particular graph.  How likely was it that we would end up with 3 components?  To find the real answer we&rsquo;d have to look at all derangements of 16 elements and there are 7,697,064,251,745 of those.  Instead I sampled 10 million at random:</p>
 
 <pre><code>      3 instances of 8 components (ratio 0.000000)
     554 instances of 7 components (ratio 0.000055)
@@ -336,7 +338,7 @@ Eric &lt;- Laine &lt;- Elron &lt;- John
 3824689 instances of 2 components (ratio 0.382469)
 </code></pre>
 
-<p>So 3 components isn&rsquo;t very rare.  The pairs on the other hand will hardly ever happen which is good as that would be a weird game.  What about the particular pattern of a 2 node components, a 6 node and an 8 node?  From a different sample of 10 million:</p>
+<p>So 3 components is common.  The pairs on the other hand will hardly ever happen which is good as that would be a weird game.  What about the particular pattern of a 2 node components, a 6 node and an 8 node?  From a different sample of 10 million:</p>
 
 <pre><code>      3 instances of [2, 2, 2, 2, 2, 2, 2, 2] (ratio 0.000000)
     145 instances of [2, 2, 2, 2, 2, 2, 4]    (ratio 0.000015)
@@ -395,7 +397,7 @@ Eric &lt;- Laine &lt;- Elron &lt;- John
 1699299 instances of [16]                     (ratio 0.169930)
 </code></pre>
 
-<p>It&rsquo;s one of the less rare ones, and happens around 3% of the time.  For fun let&rsquo;s try and work out the probability of hitting the complete single cycle of 16 to see if it matches our experience sampling.  Any element can be &ldquo;first&rdquo; so we can say there is one way of picking it.  Then the first element can pair with any other but itself, so there are 15 ways of doing that.  Then the next just has to avoid the first and itself, so there are 14 ways of doing that.  The next has 13 ways.</p>
+<p>It&rsquo;s one of the less rare ones, and happens around 3% of the time.  For fun let&rsquo;s try and work out the probability of hitting the complete single cycle of 16 to see if it matches our experience sampling.  Any element can be &ldquo;first&rdquo; so we can say there is one way of picking it.  Then the first element can pair with any other but itself, so there are 15 ways of doing that.  Then the next just has to avoid the first and itself, so there are 14 ways of doing that.  The next has 13 ways and you can see where this is going:</p>
 
 <pre><code>15 * 14 * 13 * 12 * 11 * 10 * 9 * 8 * 7 * 6 * 5 * 4 * 3 * 2 * 1 
     = 1307674368000
