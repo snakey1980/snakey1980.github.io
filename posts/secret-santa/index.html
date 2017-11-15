@@ -100,7 +100,7 @@ Names in a hat The first time I played Secret Santa we assigned givers and recei
 <li>Take turns to shake the hat and pick a name out at random.  If you pick your own name, put it back and pick again.</li>
 </ol>
 
-<p>So when I decided to program it this is how I tried to do it.  Here we use plain integers as the players:</p>
+<p>So when I decided to program it this is how I tried to do it.  Here we use integers as the players and they get paired up in giver, receiver pairs:</p>
 
 <pre><code>fun draw(n: Int) : List&lt;Pair&lt;Int, Int&gt;&gt; {
     if (n &lt; 4) throw IllegalArgumentException()
