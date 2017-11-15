@@ -4,14 +4,14 @@
 <head>
   <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<meta name='description' content='Names in a hat The first time I played Secret Santa we assigned givers/receivers like this:
- Players put their name in a hat Players take turn to shake the hat and pick a name out at random. If you pull your own name, put it back and pull again.  So this is how I tried to implement it. Here we use plain integers as the players:
-fun draw(n: Int) : List&lt;Pair&lt;Int, Int&gt;&gt; { if (n &lt; 4) throw IllegalArgumentException() val players = (1.'>
+<meta name='description' content='Everything I never knew about Secret Santa&hellip;
+Names in a hat The first time I played Secret Santa we assigned givers/receivers like this:
+ Players put their name in a hat Players take turn to shake the hat and pick a name out at random. If you pull your own name, put it back and pull again.  So when I decided to program it this is how I tried to do it.'>
 
 <meta property='og:title' content='Secret Santa • snakey1980&#39;s GitHub Pages'>
-<meta property='og:description' content='Names in a hat The first time I played Secret Santa we assigned givers/receivers like this:
- Players put their name in a hat Players take turn to shake the hat and pick a name out at random. If you pull your own name, put it back and pull again.  So this is how I tried to implement it. Here we use plain integers as the players:
-fun draw(n: Int) : List&lt;Pair&lt;Int, Int&gt;&gt; { if (n &lt; 4) throw IllegalArgumentException() val players = (1.'>
+<meta property='og:description' content='Everything I never knew about Secret Santa&hellip;
+Names in a hat The first time I played Secret Santa we assigned givers/receivers like this:
+ Players put their name in a hat Players take turn to shake the hat and pick a name out at random. If you pull your own name, put it back and pull again.  So when I decided to program it this is how I tried to do it.'>
 <meta property='og:url' content='http://snakey1980.github.io/posts/secret-santa/'>
 <meta property='og:site_name' content='snakey1980&#39;s GitHub Pages'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:published_time' content='2017-11-13T19:49:44-05:00'/><meta property='article:modified_time' content='2017-11-13T19:49:44-05:00'/><meta name='twitter:card' content='summary'>
@@ -89,6 +89,8 @@ fun draw(n: Int) : List&lt;Pair&lt;Int, Int&gt;&gt; { if (n &lt; 4) throw Illega
     <div class='entry-content'>
   
 
+<p>Everything I never knew about Secret Santa&hellip;</p>
+
 <h4 id="names-in-a-hat">Names in a hat</h4>
 
 <p>The first time I played Secret Santa we assigned givers/receivers like this:</p>
@@ -98,7 +100,7 @@ fun draw(n: Int) : List&lt;Pair&lt;Int, Int&gt;&gt; { if (n &lt; 4) throw Illega
 <li>Players take turn to shake the hat and pick a name out at random.  If you pull your own name, put it back and pull again.</li>
 </ol>
 
-<p>So this is how I tried to implement it.  Here we use plain integers as the players:</p>
+<p>So when I decided to program it this is how I tried to do it.  Here we use plain integers as the players:</p>
 
 <pre><code>fun draw(n: Int) : List&lt;Pair&lt;Int, Int&gt;&gt; {
     if (n &lt; 4) throw IllegalArgumentException()
@@ -124,7 +126,7 @@ fun draw(n: Int) : List&lt;Pair&lt;Int, Int&gt;&gt; { if (n &lt; 4) throw Illega
 
 <p>but try it a few times and, on some runs, it will never finish.  It&rsquo;s not hard to see why &ndash; it&rsquo;s possible that when number 4 comes to choose, it finds only itself in the pot and reshuffles forever.</p>
 
-<p>This could happen in a real names-in-a-hat situation too.  When it does, there&rsquo;s nothing to be done but to put all the names back in and try again, so that&rsquo;s what I tried next:</p>
+<p>This could happen in a real names-in-a-hat situation too.  Has it ever happened to you?  When it does, there&rsquo;s nothing to be done but to put all the names back in and try again, so that&rsquo;s what I tried next:</p>
 
 <pre><code>fun draw2(n: Int) : List&lt;Pair&lt;Int, Int&gt;&gt; {
     if (n &lt; 4) throw IllegalArgumentException()
@@ -235,7 +237,7 @@ patterns.entries.sortedByDescending { it.value }.forEach { println(it) }
 
 <h4 id="derangements">Derangements</h4>
 
-<p>At this point let&rsquo;s forget the hat metaphor and more honestly represent what we are doing:</p>
+<p>At this point let&rsquo;s forget the hat metaphor:</p>
 
 <pre><code>fun draw4(n: Int) : List&lt;Pair&lt;Int, Int&gt;&gt; {
     if (n &lt; 4) throw IllegalArgumentException()
@@ -267,7 +269,7 @@ Found 1854 derangements for 7 players
 
 <pre><code>for (i in (4..11)) {
     val count = generatePermutations((0 until i).toList())
-            .filter { perm -&gt; perm.none { perm.indexOf(it) == it } }.count()
+            .filter { perm -&gt; (0 until i).none { perm[it] == it } }.count()
     println(&quot;Found $count derangements of $i elements&quot;)
 }
 
