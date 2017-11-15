@@ -105,14 +105,14 @@ Names in a hat The first time I played Secret Santa we assigned givers and recei
 <pre><code>fun draw(n: Int) : List&lt;Pair&lt;Int, Int&gt;&gt; {
     if (n &lt; 4) throw IllegalArgumentException()
     val players = (1..n).toSet()
-    val pot = players.toMutableList()
-    Collections.shuffle(pot)
+    val hat = players.toMutableList()
+    Collections.shuffle(hat)
     val result = mutableListOf&lt;Pair&lt;Int, Int&gt;&gt;()
     players.forEach {
-        while (pot[0] == it) {
-            Collections.shuffle(pot)
+        while (hat[0] == it) {
+            Collections.shuffle(hat)
         }
-        result.add(Pair(it, pot.removeAt(0)))
+        result.add(Pair(it, hat.removeAt(0)))
     }
     return result
 }
@@ -124,31 +124,31 @@ Names in a hat The first time I played Secret Santa we assigned givers and recei
 // printed [(1, 4), (2, 1), (3, 2), (4, 3)]
 </code></pre>
 
-<p>but try it a few times and, on some runs, it will never finish.  It&rsquo;s not hard to see why &ndash; it&rsquo;s possible that when number 4 comes to choose, it finds only itself in the pot and reshuffles forever.</p>
+<p>but try it a few times and, on some runs, it will never finish.  It&rsquo;s not hard to see why &ndash; it&rsquo;s possible that when number 4 comes to choose, it finds only itself in the hat and reshuffles forever.</p>
 
 <p>This could happen in a real names-in-a-hat situation too.  Has it ever happened to you?  When it does, there&rsquo;s nothing to be done but to put all the names back in and try again, so that&rsquo;s what I tried next:</p>
 
 <pre><code>fun draw2(n: Int) : List&lt;Pair&lt;Int, Int&gt;&gt; {
     if (n &lt; 4) throw IllegalArgumentException()
     val players = (1..n).toSet()
-    class BadPotException : RuntimeException()
+    class BadHatException : RuntimeException()
     while (true) {
-        val pot = players.toMutableList()
-        Collections.shuffle(pot)
+        val hat = players.toMutableList()
+        Collections.shuffle(hat)
         try {
             val result = mutableListOf&lt;Pair&lt;Int, Int&gt;&gt;()
             players.forEach {
-                if (pot.size == 1 &amp;&amp; pot[0] == it) {
-                    throw BadPotException()
+                if (hat.size == 1 &amp;&amp; hat[0] == it) {
+                    throw BadHatException()
                 }
-                while (pot[0] == it) {
-                    Collections.shuffle(pot)
+                while (hat[0] == it) {
+                    Collections.shuffle(hat)
                 }
-                result.add(Pair(it, pot.removeAt(0)))
+                result.add(Pair(it, hat.removeAt(0)))
             }
             return result
         }
-        catch (e: BadPotException) {
+        catch (e: BadHatException) {
             // ok, try again
         }
     }
@@ -201,21 +201,21 @@ patterns.entries.sortedByDescending { it.value }.forEach { println(it) }
 <pre><code>fun draw3(n: Int) : List&lt;Pair&lt;Int, Int&gt;&gt; {
     if (n &lt; 4) throw IllegalArgumentException()
     val players = (1..n).toSet()
-    class BadPotException : RuntimeException()
+    class BadHatException : RuntimeException()
     while (true) {
-        val pot = players.toMutableList()
-        Collections.shuffle(pot)
+        val hat = players.toMutableList()
+        Collections.shuffle(hat)
         try {
             val result = mutableListOf&lt;Pair&lt;Int, Int&gt;&gt;()
             players.forEach {
-                if (pot[0] == it) {
-                    throw BadPotException()
+                if (hat[0] == it) {
+                    throw BadHatException()
                 }
-                result.add(Pair(it, pot.removeAt(0)))
+                result.add(Pair(it, hat.removeAt(0)))
             }
             return result
         }
-        catch (e: BadPotException) {
+        catch (e: BadHatException) {
             // ok, try again
         }
     }
