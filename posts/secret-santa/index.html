@@ -5,12 +5,12 @@
   <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 <meta name='description' content='Names in a hat The first time I played Secret Santa we assigned givers/receivers like this:
- Players put their name in a hat Players take turn to pull names out. If you pull your own name, put it back and pull again.  So this is how I tried to implement it. Here we use plain integers as the players:
+ Players put their name in a hat Players take turn to shake the hat and pick a name out at random. If you pull your own name, put it back and pull again.  So this is how I tried to implement it. Here we use plain integers as the players:
 fun draw(players: Set&lt;Int&gt;) : List&lt;Pair&lt;Int, Int&gt;&gt; { if (players.'>
 
 <meta property='og:title' content='Secret Santa • snakey1980&#39;s GitHub Pages'>
 <meta property='og:description' content='Names in a hat The first time I played Secret Santa we assigned givers/receivers like this:
- Players put their name in a hat Players take turn to pull names out. If you pull your own name, put it back and pull again.  So this is how I tried to implement it. Here we use plain integers as the players:
+ Players put their name in a hat Players take turn to shake the hat and pick a name out at random. If you pull your own name, put it back and pull again.  So this is how I tried to implement it. Here we use plain integers as the players:
 fun draw(players: Set&lt;Int&gt;) : List&lt;Pair&lt;Int, Int&gt;&gt; { if (players.'>
 <meta property='og:url' content='http://snakey1980.github.io/posts/secret-santa/'>
 <meta property='og:site_name' content='snakey1980&#39;s GitHub Pages'>
@@ -95,7 +95,7 @@ fun draw(players: Set&lt;Int&gt;) : List&lt;Pair&lt;Int, Int&gt;&gt; { if (playe
 
 <ol>
 <li>Players put their name in a hat</li>
-<li>Players take turn to pull names out.  If you pull your own name, put it back and pull again.</li>
+<li>Players take turn to shake the hat and pick a name out at random.  If you pull your own name, put it back and pull again.</li>
 </ol>
 
 <p>So this is how I tried to implement it.  Here we use plain integers as the players:</p>
@@ -121,7 +121,7 @@ fun draw(players: Set&lt;Int&gt;) : List&lt;Pair&lt;Int, Int&gt;&gt; { if (playe
 // printed [(1, 4), (2, 1), (3, 2), (4, 3)]
 </code></pre>
 
-<p>but try it a few times and, on some runs, it will never finish.  It&rsquo;s not hard to see why &ndash; it&rsquo;s possible that when number 4 comes to choose, it finds only itself in the pot and reshuffles uselessly forever.</p>
+<p>but try it a few times and, on some runs, it will never finish.  It&rsquo;s not hard to see why &ndash; it&rsquo;s possible that when number 4 comes to choose, it finds only itself in the pot and reshuffles forever.</p>
 
 <p>This could happen in a real names-in-a-hat situation too.  When it does, there&rsquo;s nothing to be done but to put all the names back in and try again, so that&rsquo;s what I tried next:</p>
 
@@ -156,37 +156,20 @@ fun draw(players: Set&lt;Int&gt;) : List&lt;Pair&lt;Int, Int&gt;&gt; { if (playe
 <pre><code>(1..100_000).forEach { SecretSanta().draw2(setOf(1, 2, 3, 4)) }
 </code></pre>
 
-<p>With 4 players, there aren&rsquo;t many valid assignments.  We can list out all the permutations and pick out the 9 valid ones:</p>
+<p>With 4 players, there aren&rsquo;t many valid assignments, just these 9:</p>
 
-<pre><code>           PERMUTATION            VALID SECRET SANTA ASSIGNMENT?
-
-[(1, 1), (2, 2), (3, 3), (4, 4)]              no
-[(1, 1), (2, 2), (3, 4), (4, 3)]              no
-[(1, 1), (2, 3), (3, 2), (4, 4)]              no
-[(1, 1), (2, 3), (3, 4), (4, 2)]              no
-[(1, 1), (2, 4), (3, 2), (4, 3)]              no
-[(1, 1), (2, 4), (3, 3), (4, 2)]              no
-[(1, 2), (2, 1), (3, 3), (4, 4)]              no
-[(1, 2), (2, 1), (3, 4), (4, 3)]              yes
-[(1, 2), (2, 3), (3, 1), (4, 4)]              no
-[(1, 2), (2, 3), (3, 4), (4, 1)]              yes
-[(1, 2), (2, 4), (3, 1), (4, 3)]              yes
-[(1, 2), (2, 4), (3, 3), (4, 1)]              no
-[(1, 3), (2, 1), (3, 2), (4, 4)]              no
-[(1, 3), (2, 1), (3, 4), (4, 2)]              yes
-[(1, 3), (2, 2), (3, 1), (4, 4)]              no
-[(1, 3), (2, 2), (3, 4), (4, 1)]              no
-[(1, 3), (2, 4), (3, 1), (4, 2)]              yes
-[(1, 3), (2, 4), (3, 2), (4, 1)]              yes
-[(1, 4), (2, 1), (3, 2), (4, 3)]              yes
-[(1, 4), (2, 1), (3, 3), (4, 2)]              no
-[(1, 4), (2, 2), (3, 1), (4, 3)]              no
-[(1, 4), (2, 2), (3, 3), (4, 1)]              no
-[(1, 4), (2, 3), (3, 1), (4, 2)]              yes
-[(1, 4), (2, 3), (3, 2), (4, 1)]              yes
+<pre><code>[(1, 2), (2, 1), (3, 4), (4, 3)]
+[(1, 2), (2, 3), (3, 4), (4, 1)]
+[(1, 2), (2, 4), (3, 1), (4, 3)]
+[(1, 3), (2, 1), (3, 4), (4, 2)]
+[(1, 3), (2, 4), (3, 1), (4, 2)]
+[(1, 3), (2, 4), (3, 2), (4, 1)]
+[(1, 4), (2, 1), (3, 2), (4, 3)]
+[(1, 4), (2, 3), (3, 1), (4, 2)]
+[(1, 4), (2, 3), (3, 2), (4, 1)]
 </code></pre>
 
-<p>A good test would be to see if our procedure return each of the nine, and that it returns each one one ninth of the time:</p>
+<p>A good test would be to see if our procedure returns each of the nine, and that it returns each one one ninth of the time:</p>
 
 <pre><code>val patterns = mutableMapOf&lt;List&lt;Pair&lt;Int, Int&gt;&gt;, Int&gt;()
 (1..100_000).forEach {
@@ -209,7 +192,7 @@ patterns.entries.sortedByDescending { it.value }.forEach { println(it) }
 [(1, 2), (2, 3), (3, 4), (4, 1)]=6509
 </code></pre>
 
-<p>The algorithm is biased.  We are giving special treatment to the last pick and this is skewing everything.  What if we reject the draw as soon as we find an element in the wrong place:</p>
+<p>The algorithm is biased.  We are giving special treatment to the last pick and this is skewing the distribution.  So, what if we reject the draw as soon as we find an element in the wrong place:</p>
 
 <pre><code>fun draw3(players: Set&lt;Int&gt;) : List&lt;Pair&lt;Int, Int&gt;&gt; {
     class BadPotException : RuntimeException()
@@ -247,6 +230,8 @@ patterns.entries.sortedByDescending { it.value }.forEach { println(it) }
 [(1, 2), (2, 1), (3, 4), (4, 3)]=11006
 </code></pre>
 
+<h4 id="derangements">Derangements</h4>
+
 <p>At this point let&rsquo;s forget the hat metaphor and more honestly represent what we are doing:</p>
 
 <pre><code>fun draw4(players: Set&lt;Int&gt;) : List&lt;Pair&lt;Int, Int&gt;&gt; {
@@ -258,7 +243,7 @@ patterns.entries.sortedByDescending { it.value }.forEach { println(it) }
 }
 </code></pre>
 
-<p>We are generating permutations of the players and rejecting them if they are not &ldquo;derangements&rdquo;.  We found there were 9 derangements of 4 players.  Let&rsquo;s see how many we get for 5, 6 and 7 players:</p>
+<p>We are generating permutations of the players and rejecting them if they are not &ldquo;derangements&rdquo; (<a href="https://en.wikipedia.org/wiki/Derangement">https://en.wikipedia.org/wiki/Derangement</a>).  We found there were 9 derangements of 4 players.  Let&rsquo;s see how many we get for 5, 6 and 7 players:</p>
 
 <pre><code>for (i in 5..7) {
     val patterns = mutableSetOf&lt;List&lt;Pair&lt;Int, Int&gt;&gt;&gt;()
@@ -274,9 +259,9 @@ Found 265 derangements for 6 players
 Found 1854 derangements for 7 players
 </code></pre>
 
-<p>This agrees with <a href="https://oeis.org/A000166">https://oeis.org/A000166</a> which describes this sequence.</p>
+<p>Of course, just doing it 100,000 times doesn&rsquo;t mean we hit all of the possible derangements.  But we can take a look at <a href="https://oeis.org/A000166">https://oeis.org/A000166</a> and see that we did indeed do it.  If we wanted to guarantee it we could generate all permutations and check them.</p>
 
-<p>We are not tracking how many times we had to shuffle.  We can assume it&rsquo;s not too many times since, so far, we were able to perform draws quite quickly.  But will it get a lot harder as we have more players?  Counting the shuffles and timing gives:</p>
+<p>We have not been tracking how many times we had to shuffle.  We can assume it&rsquo;s not too many times since, so far, we were able to perform draws quite quickly.  But will we have to shuffle more as we have more players?  Counting the shuffles and timing gives:</p>
 
 <pre><code>10 players took 29ms and performed 7 shuffles
 100 players took 0ms and performed 1 shuffles
@@ -287,7 +272,37 @@ Found 1854 derangements for 7 players
 10000000 players took 158218ms and performed 6 shuffles
 </code></pre>
 
-<p>It doesn&rsquo;t become harder to find derangements so we never need to shuffle many times but it does become harder to shuffle.  On the last one my laptop was thrashing.</p>
+<p>We don&rsquo;t have to shuffle more at all, but shuffling itself must take longer, as we would expect.  On the last one my laptop lost its mind.  So the lack of shuffling suggests that derangements remain fairly common even as the number of permutations goes through the roof (there are n! permutations of n elements).  It turns out (see <a href="https://en.wikipedia.org/wiki/Derangement">https://en.wikipedia.org/wiki/Derangement</a> again) that the ratio of permutations to derangements tends to 1/e as n goes to infinity.  So we don&rsquo;t need to worry about that.</p>
+
+<h4 id="cycles">Cycles</h4>
+
+<p>The first time I organised a Secret Santa game one player succeeded in figuring out the assignments through detective work and confessions.  We had 16 players that year.</p>
+
+<pre><code>Tom -&gt; Alice -&gt; Ashley -&gt; Nora  
+ |                          |
+Eric &lt;- Laine &lt;- Elron &lt;- John
+
+
+        Mark -&gt; Ambs -&gt; Andy 
+          |               |  
+        Laura &lt;- Cory &lt;- Indy
+
+
+                Derek --&gt; Gerry 
+                  `-----&lt;----'
+</code></pre>
+
+<p>Seeing this graph made me think about a few things:</p>
+
+<ol>
+<li>It&rsquo;s fun to look at the assignments as cyclic graphs</li>
+<li>It&rsquo;s possible we could have had one big cycle</li>
+<li>It&rsquo;s possible we could have had 8 pairs</li>
+</ol>
+
+<p>So how likely was the 3 component</p>
+
+<p>7,697,064,251,745</p>
 
 </div>
 
