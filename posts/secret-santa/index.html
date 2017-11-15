@@ -397,9 +397,9 @@ Eric &lt;- Laine &lt;- Elron &lt;- John
 1699299 instances of [16]                     (ratio 0.169930)
 </code></pre>
 
-<p>It&rsquo;s one of the less rare ones, and happens around 3% of the time.  For fun let&rsquo;s try and work out the probability of hitting the complete single cycle of 16 to see if it matches our experience sampling.  Any element can be &ldquo;first&rdquo; so we can say there is one way of picking it.  Then the first element can pair with any other but itself, so there are 15 ways of doing that.  Then the next just has to avoid the first and itself, so there are 14 ways of doing that.  The next has 13 ways and you can see where this is going:</p>
+<p>It&rsquo;s one of the less rare ones, and happens around 3% of the time.  For fun let&rsquo;s try and work out the probability of hitting the complete single cycle of 16 to see if it matches our experience sampling.  To make the complete cycle, any element can be &ldquo;first&rdquo; so we can say there is one way of picking it.  Then the first element can pair with any other but itself, so there are 15 ways of doing that.  Then the next just has to avoid the first and itself, so there are 14 ways of doing that.  The next has 13 then 12 then 11 all the way to the last element which can only match to the first.</p>
 
-<pre><code>15 * 14 * 13 * 12 * 11 * 10 * 9 * 8 * 7 * 6 * 5 * 4 * 3 * 2 * 1 
+<pre><code>1 * 15 * 14 * 13 * 12 * 11 * 10 * 9 * 8 * 7 * 6 * 5 * 4 * 3 * 2 * 1 
     = 1307674368000
 </code></pre>
 
