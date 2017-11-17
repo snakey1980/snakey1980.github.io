@@ -430,17 +430,27 @@ Eric &lt;- Laine &lt;- Elron &lt;- John
 
 <p>So far I didn&rsquo;t worry about shuffling, I just used a library shuffle.  What if I write my own shuffle and adapt it to avoid non-derangements?  Then I could avoid ever reshuffling.  The shuffle I was using, java.util.Collections.shuffle, does something like this:</p>
 
-<pre><code>fun shuffle(list: MutableList&lt;Int&gt;, random: Random) {
-    fun swap(list: MutableList&lt;Int&gt;, i: Int, j: Int) {
-        list.set(i, list.set(j, list[i]))
-    }
+<pre><code>fun shuffle(n: Int, random: Random) : List&lt;Int&gt; {
+    val list = (1..n).toMutableList()
     for (i in list.size downTo 2) {
-        swap(list, i - 1, random.nextInt(i))
+        list.set(i - 1, list.set(random.nextInt(i), list[i - 1]))
     }
+    return list
 }    
 </code></pre>
 
-<p>This is a modern Fisher-Yates shuffle.  My attempts to adapt it didn&rsquo;t end well and it seems this is a <a href="https://stackoverflow.com/questions/7279895/shuffle-list-ensuring-that-no-item-remains-in-same-position">tricky problem</a>.</p>
+<p>This is a modern Fisher-Yates shuffle.  My attempts to adapt it didn&rsquo;t end well and it seems this is a <a href="https://stackoverflow.com/questions/7279895/shuffle-list-ensuring-that-no-item-remains-in-same-position">tricky problem</a>.  One failed attempt is the following:</p>
+
+<pre><code>fun derange(n: Int, random: Random) : List&lt;Int&gt; {
+    val list = (1..n).toMutableList()
+    for (i in list.size downTo 2) {
+        list.set(i - 1, list.set(random.nextInt(i - 1), list[i - 1]))
+    }
+    return list
+}
+</code></pre>
+
+<p>which does produce valid derangements, but only complete cycles.  This is called (Sattolo&rsquo;s algorithm)[<a href="https://danluu.com/sattolo/">https://danluu.com/sattolo/</a>] and would be an alternative to the draw5() method above.</p>
 
 <p>My Secret Santa program is <a href="https://github.com/snakey1980/secretsanta">here</a>.</p>
 
