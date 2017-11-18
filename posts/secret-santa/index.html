@@ -470,7 +470,7 @@ Eric &lt;- Laine &lt;- Elron &lt;- John
 }    
 </code></pre>
 
-<p>This is a (Fisher-Yates shuffle)[<a href="https://en.wikipedia.org/wiki/Fisher–Yates_shuffle">https://en.wikipedia.org/wiki/Fisher–Yates_shuffle</a>].  My attempts to adapt it didn&rsquo;t end well and it seems this is a <a href="https://stackoverflow.com/questions/7279895/shuffle-list-ensuring-that-no-item-remains-in-same-position">tricky problem</a>.  One failed attempt led me to the following:</p>
+<p>This is a <a href="https://en.wikipedia.org/wiki/Fisher–Yates_shuffle">Fisher-Yates shuffle</a>.  My attempts to adapt it didn&rsquo;t end well and it seems this is a <a href="https://stackoverflow.com/questions/7279895/shuffle-list-ensuring-that-no-item-remains-in-same-position">tricky problem</a>.  One failed attempt led me to the following:</p>
 
 <pre><code>fun derange(n: Int, random: Random) : List&lt;Int&gt; {
     val list = (1..n).toMutableList()
