@@ -298,7 +298,7 @@ Found 14684570 derangements of 11 elements
 10000000 players took 158218ms and performed 6 shuffles
 </code></pre>
 
-<p>We don&rsquo;t have to shuffle more, but shuffling itself takes longer as we add players.  So the lack of shuffling suggests that derangements remain fairly common even as the number of permutations goes through the roof (there are n! permutations of n elements).  <a href="https://en.wikipedia.org/wiki/Derangement#Limit_of_ratio_of_derangement_to_permutation_as_n_approaches_.E2.88.9E">It turns out</a> that the ratio of permutations to derangements ends up approximately 1/e.</p>
+<p>We don&rsquo;t have to shuffle more, but shuffling itself takes longer as we add players.  So the lack of extra shuffling suggests that chances of hitting a derangement remain about the same even as the number of permutations goes through the roof (there are n! permutations of n elements).  <a href="https://en.wikipedia.org/wiki/Derangement#Limit_of_ratio_of_derangement_to_permutation_as_n_approaches_.E2.88.9E">It turns out</a> that the ratio of permutations to derangements ends up approximately 1/e.</p>
 
 <h4 id="cycles">Cycles</h4>
 
@@ -455,7 +455,7 @@ Eric &lt;- Laine &lt;- Elron &lt;- John
 }
 </code></pre>
 
-<p>It&rsquo;s guaranteed to create a derangement and it&rsquo;s uniformly random over its possibilities.  A problem is that the possibilities themselves are restricted to complete cycles, meaning that we would be missing most derangements.  This might not matter if everyone is getting bubble bath and no one cares to guess who got what, but it somewhat spoils the detective work part.  On the other hand, a cycle is quite pleasing.  I did not adopt this method for my program.</p>
+<p>It&rsquo;s guaranteed to create a derangement and it&rsquo;s uniformly random over its possibilities.  A problem is that the possibilities themselves are restricted to complete cycles, meaning that we would be missing most derangements.  This might not matter if everyone is getting bubble bath and no one cares to guess who got what, but if you enjoy the detective work part then it&rsquo;s less fun this way.  On the other hand, a cycle is quite pleasing.  I did not adopt this method for my program.</p>
 
 <h4 id="smarter-shuffling">Smarter shuffling</h4>
 
