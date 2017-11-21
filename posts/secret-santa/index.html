@@ -1020,7 +1020,8 @@ Eric &lt;- Laine &lt;- Elron &lt;- John
     if (n &lt; 4) throw IllegalArgumentException()
     val players = (1..n)
     val permutation = players.toMutableList()
-    return (0 until n).map { 
+    Collections.shuffle(permutation)
+    return (0 until n).map {
         Pair(permutation[it], permutation[(it + 1) % n])
     }
 }
