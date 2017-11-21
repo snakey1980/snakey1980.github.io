@@ -497,7 +497,106 @@ patterns.entries.sortedByDescending { it.value }.forEach { println(it) }
 </tbody>
 </table>
 
-<p>We don&rsquo;t have to shuffle more, but shuffling itself takes longer as we add players.  So the lack of extra shuffling suggests that chances of hitting a derangement remain about the same even as the number of permutations goes through the roof (there are n! permutations of n elements).  <a href="https://en.wikipedia.org/wiki/Derangement#Limit_of_ratio_of_derangement_to_permutation_as_n_approaches_.E2.88.9E">It turns out</a> that the ratio of derangements to permutations ends up approximately 1/e.</p>
+<p>We don&rsquo;t have to shuffle more, but shuffling itself takes longer as we add players.  So the lack of extra shuffling suggests that chances of hitting a derangement remain about the same even as the number of permutations goes through the roof (there are n! permutations of n elements).  Extending the earlier table with the number of permutations</p>
+
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>Permutations</th>
+<th>Derangements</th>
+<th>Ratio</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>-</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>6</td>
+<td>2</td>
+<td>3</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>24</td>
+<td>9</td>
+<td>2.66667</td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>120</td>
+<td>44</td>
+<td>2.72727</td>
+</tr>
+
+<tr>
+<td>6</td>
+<td>720</td>
+<td>265</td>
+<td>2.71698</td>
+</tr>
+
+<tr>
+<td>7</td>
+<td>5040</td>
+<td>1854</td>
+<td>2.71845</td>
+</tr>
+
+<tr>
+<td>8</td>
+<td>40320</td>
+<td>14833</td>
+<td>2.71826</td>
+</tr>
+
+<tr>
+<td>9</td>
+<td>362880</td>
+<td>133496</td>
+<td>2.71828</td>
+</tr>
+
+<tr>
+<td>10</td>
+<td>3628800</td>
+<td>1334961</td>
+<td>2.71828</td>
+</tr>
+
+<tr>
+<td>11</td>
+<td>39916800</td>
+<td>14684570</td>
+<td>2.71828</td>
+</tr>
+</tbody>
+</table>
+
+<p>We can see that the ratio levels off, at <em>e</em>.  See <a href="https://en.wikipedia.org/wiki/Derangement#Limit_of_ratio_of_derangement_to_permutation_as_n_approaches_.E2.88.9E">the Wikipedia article</a> for details.</p>
 
 <h4 id="cycles">Cycles</h4>
 
@@ -520,7 +619,7 @@ Eric &lt;- Laine &lt;- Elron &lt;- John
 <p>Seeing this graph made me think about a few things:</p>
 
 <ol>
-<li>It&rsquo;s fun to look at the assignments as cyclic graphs</li>
+<li>It&rsquo;s fun to look at the assignments as graphs</li>
 <li>It&rsquo;s possible we could have had one big cycle</li>
 <li>It&rsquo;s possible we could have had 8 pairs</li>
 </ol>
@@ -1014,7 +1113,9 @@ Eric &lt;- Laine &lt;- Elron &lt;- John
 
 <h4 id="back-to-the-hat">Back to the hat</h4>
 
-<p>Back in the real world, we still have a problem in that the hat method has become annoying to implement, what with the high probability of telling people to restart multiple times.  There&rsquo;s a real world method described <a href="https://www.youtube.com/watch?v=GhnCj7Fvqt0">in this video</a> which can come up with a valid assignment in one pass.  The idea is you shuffle once and then each participant is assigned to its neighbour in the shuffle with the last in line looping around to be assigned to the first.  The video explains how to make this work with real people and paper.  In code it looks like:</p>
+<p>Back in the real world, we still have a problem in that the hat method has become annoying to implement, what with the high probability of telling people to restart multiple times.  There is also an anonymity problem.  You gain information when you witness someone rejecting their own name.  In an extreme case, if the second-to-last person rejects their name, then you can be sure that the last persion will end up drawing the second-to-last.</p>
+
+<p>There&rsquo;s a real world method described <a href="https://www.youtube.com/watch?v=GhnCj7Fvqt0">in this video</a> which can come up with a valid assignment in one pass and claims to achieve anonymity and fairness.  The idea is you shuffle once and then each participant is assigned to its neighbour in the shuffle with the last in line looping around to be assigned to the first.  The video explains how to make this work with real people and paper.  In code it looks like:</p>
 
 <pre><code>fun draw5(n: Int) : List&lt;Pair&lt;Int, Int&gt;&gt; {
     if (n &lt; 4) throw IllegalArgumentException()
