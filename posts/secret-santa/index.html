@@ -241,7 +241,7 @@ patterns.entries.sortedByDescending { it.value }.forEach { println(it) }
 </tbody>
 </table>
 
-<p>The algorithm is biased.  We are giving special treatment to the last pick and this is skewing the distribution.  There is also an anonymity problem.  You gain information when you witness someone rejecting their own name and put it back.  In an extreme case, if the second-to-last person rejects their name, then you can be sure that the last persion will end up drawing the second-to-last.  So, what if we reject the draw as soon as we find an element in the wrong place and reshuffle the whole hat:</p>
+<p>The algorithm is biased.  We are giving special treatment to the last pick and this is skewing the distribution.  There is also an anonymity problem.  You gain information when you witness someone drawing their own name and putting it back.  In an extreme case, if the second-to-last person draws their name and puts it back, then you can be sure that the last persion will end up drawing the second-to-last.  So, what if we reject the draw as soon as we find an element in the wrong place and reshuffle the whole hat:</p>
 
 <pre><code>fun draw3(n: Int) : List&lt;Pair&lt;Int, Int&gt;&gt; {
     if (n &lt; 4) throw IllegalArgumentException()
