@@ -1156,7 +1156,7 @@ Eric &lt;- Laine &lt;- Elron &lt;- John
 
 <p>which does produce valid derangements, but only complete cycles.  This is called <a href="https://danluu.com/sattolo/">Sattolo&rsquo;s algorithm</a> and would be an alternative to the draw5() method above.</p>
 
-<p>There is an algorithm described <a href="http://epubs.siam.org/doi/pdf/10.1137/1.9781611972986.7">here</a> which does produce random derangements.  Here it is more or less as described in the paper:</p>
+<p>There is an algorithm described <a href="http://epubs.siam.org/doi/pdf/10.1137/1.9781611972986.7">here</a> which does produce random derangements without trial and error of permutations.  Here it is, more or less as described in the paper:</p>
 
 <pre><code>fun randomDerangement(n: Int) : List&lt;Int&gt; {
     fun numDerangements(n: Int): BigDecimal {
