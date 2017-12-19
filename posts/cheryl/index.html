@@ -135,6 +135,7 @@ fun main(args: Array&lt;String&gt;) {
     }
 
     val problemSolver = Agent() // this is us!
+
     for (statement in listOf(::statement1, ::statement2, ::statement3)) {
         problemSolver.tellStatement(statement)
         if (problemSolver.know()) {
