@@ -17,7 +17,8 @@
       <pubDate>Tue, 19 Dec 2017 12:57:55 -0500</pubDate>
       
       <guid>http://snakey1980.github.io/posts/cheryl/</guid>
-      <description>Cheryl&amp;rsquo;s Birthday was fun a few years ago. Even more fun is Peter Norvig&amp;rsquo;s treatment of it with Python. What follows here is just straight up copied from Norvig reimplemented in Kotlin. Kotlin is quite nice here as it&amp;rsquo;s more natural to use types and some OO and you get the quite satisfying idea of Albert, Bernard and us (the one solving the problem) being the same type of thing.</description>
+      <description>Cheryl&amp;rsquo;s Birthday was fun a few years ago. Even more fun is Peter Norvig&amp;rsquo;s treatment of it with Python. What follows here is just straight up copied from Norvig reimplemented in Kotlin. Kotlin is quite nice here as it&amp;rsquo;s more natural to use some OO and you get the quite satisfying idea of Albert, Bernard and us (the one solving the problem) being the same type of thing.
+fun String.month() = this.</description>
     </item>
     
     <item>
