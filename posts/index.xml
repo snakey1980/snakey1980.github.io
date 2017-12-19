@@ -17,8 +17,10 @@
       <pubDate>Tue, 19 Dec 2017 12:57:55 -0500</pubDate>
       
       <guid>http://snakey1980.github.io/posts/cheryl/</guid>
-      <description>Cheryl&amp;rsquo;s Birthday was fun a few years ago. Even more fun is Peter Norvig&amp;rsquo;s treatment of it with Python. What follows here is just straight up copied from Norvig reimplemented in Kotlin. Kotlin is quite nice here as it&amp;rsquo;s more natural to use some OO and you get the quite satisfying idea of Albert, Bernard and us (the one solving the problem) being the same type of thing.
-fun String.month() = this.</description>
+      <description>Cheryl&amp;rsquo;s Birthday was fun a few years ago. Even more fun is Peter Norvig&amp;rsquo;s treatment of it with Python. What follows here is the same idea reimplemented in Kotlin.
+Date extenstions for Strings:
+fun String.month() = this.split(&amp;quot; &amp;quot;)[0] fun String.day() = this.split(&amp;quot; &amp;quot;)[1]  Our Agent class. An agent is someone trying to solve the puzzle, whether Albert, Bernard or ourselves.
+class Agent { val possibilities = mutableSetOf( &amp;quot;May 15&amp;quot;, &amp;quot;May 16&amp;quot;, &amp;quot;May 19&amp;quot;, &amp;quot;June 17&amp;quot;, &amp;quot;June 18&amp;quot;, &amp;quot;July 14&amp;quot;, &amp;quot;July 16&amp;quot;, &amp;quot;August 14&amp;quot;, &amp;quot;August 15&amp;quot;, &amp;quot;August 17&amp;quot;) fun tellMonth(date: String) = this.</description>
     </item>
     
     <item>

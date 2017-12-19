@@ -4,12 +4,16 @@
 <head>
   <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<meta name='description' content='Cheryl&rsquo;s Birthday was fun a few years ago. Even more fun is Peter Norvig&rsquo;s treatment of it with Python. What follows here is just straight up copied from Norvig reimplemented in Kotlin. Kotlin is quite nice here as it&rsquo;s more natural to use some OO and you get the quite satisfying idea of Albert, Bernard and us (the one solving the problem) being the same type of thing.
-fun String.month() = this.'>
+<meta name='description' content='Cheryl&rsquo;s Birthday was fun a few years ago. Even more fun is Peter Norvig&rsquo;s treatment of it with Python. What follows here is the same idea reimplemented in Kotlin.
+Date extenstions for Strings:
+fun String.month() = this.split(&quot; &quot;)[0] fun String.day() = this.split(&quot; &quot;)[1]  Our Agent class. An agent is someone trying to solve the puzzle, whether Albert, Bernard or ourselves.
+class Agent { val possibilities = mutableSetOf( &quot;May 15&quot;, &quot;May 16&quot;, &quot;May 19&quot;, &quot;June 17&quot;, &quot;June 18&quot;, &quot;July 14&quot;, &quot;July 16&quot;, &quot;August 14&quot;, &quot;August 15&quot;, &quot;August 17&quot;) fun tellMonth(date: String) = this.'>
 
 <meta property='og:title' content='Cheryl&#39;s Birthday • snakey1980&#39;s GitHub Pages'>
-<meta property='og:description' content='Cheryl&rsquo;s Birthday was fun a few years ago. Even more fun is Peter Norvig&rsquo;s treatment of it with Python. What follows here is just straight up copied from Norvig reimplemented in Kotlin. Kotlin is quite nice here as it&rsquo;s more natural to use some OO and you get the quite satisfying idea of Albert, Bernard and us (the one solving the problem) being the same type of thing.
-fun String.month() = this.'>
+<meta property='og:description' content='Cheryl&rsquo;s Birthday was fun a few years ago. Even more fun is Peter Norvig&rsquo;s treatment of it with Python. What follows here is the same idea reimplemented in Kotlin.
+Date extenstions for Strings:
+fun String.month() = this.split(&quot; &quot;)[0] fun String.day() = this.split(&quot; &quot;)[1]  Our Agent class. An agent is someone trying to solve the puzzle, whether Albert, Bernard or ourselves.
+class Agent { val possibilities = mutableSetOf( &quot;May 15&quot;, &quot;May 16&quot;, &quot;May 19&quot;, &quot;June 17&quot;, &quot;June 18&quot;, &quot;July 14&quot;, &quot;July 16&quot;, &quot;August 14&quot;, &quot;August 15&quot;, &quot;August 17&quot;) fun tellMonth(date: String) = this.'>
 <meta property='og:url' content='http://snakey1980.github.io/posts/cheryl/'>
 <meta property='og:site_name' content='snakey1980&#39;s GitHub Pages'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:published_time' content='2017-12-19T12:57:55-05:00'/><meta property='article:modified_time' content='2017-12-19T12:57:55-05:00'/><meta name='twitter:card' content='summary'>
@@ -85,57 +89,66 @@ fun String.month() = this.'>
     
 
     <div class='entry-content'>
-  <p>Cheryl&rsquo;s Birthday was <a href="https://www.theguardian.com/science/alexs-adventures-in-numberland/2015/apr/13/can-you-solve-the-singapore-primary-maths-question-that-went-viral">fun a few years ago</a>.  Even more fun is Peter Norvig&rsquo;s <a href="https://github.com/norvig/pytudes/blob/master/ipynb/Cheryl.ipynb">treatment of it</a> with Python.  What follows here is just straight up copied from Norvig reimplemented in Kotlin.  Kotlin is quite nice here as it&rsquo;s more natural to use some OO and you get the quite satisfying idea of Albert, Bernard and us (the one solving the problem) being the same type of thing.</p>
+  <p>Cheryl&rsquo;s Birthday was <a href="https://www.theguardian.com/science/alexs-adventures-in-numberland/2015/apr/13/can-you-solve-the-singapore-primary-maths-question-that-went-viral">fun a few years ago</a>.  Even more fun is Peter Norvig&rsquo;s <a href="https://github.com/norvig/pytudes/blob/master/ipynb/Cheryl.ipynb">treatment of it</a> with Python.  What follows here is the same idea reimplemented in Kotlin.</p>
+
+<p>Date extenstions for Strings:</p>
 
 <pre><code>fun String.month() = this.split(&quot; &quot;)[0]
 fun String.day() = this.split(&quot; &quot;)[1]
+</code></pre>
 
-class Agent {
+<p>Our Agent class.  An agent is someone trying to solve the puzzle, whether Albert, Bernard or ourselves.</p>
+
+<pre><code>class Agent {
     val possibilities = mutableSetOf(
         &quot;May 15&quot;,    &quot;May 16&quot;,    &quot;May 19&quot;,
         &quot;June 17&quot;,   &quot;June 18&quot;,
         &quot;July 14&quot;,   &quot;July 16&quot;,
         &quot;August 14&quot;, &quot;August 15&quot;, &quot;August 17&quot;)
-    fun tellMonth(date: String) 
+    fun tellMonth(date: String)
             = this.possibilities.retainAll { it.month() == date.month() }
-    fun tellDay(date: String) 
+    fun tellDay(date: String)
             = this.possibilities.retainAll { it.day() == date.day() }
-    fun tellStatement(statement: (String) -&gt; Boolean) 
+    fun tellStatement(statement: (String) -&gt; Boolean)
             = this.possibilities.retainAll(statement)
-    fun know(): Boolean 
+    fun know(): Boolean
             = this.possibilities.size == 1
 }
+</code></pre>
 
-fun main(args: Array&lt;String&gt;) {
+<p>The statements as functions:</p>
 
-    fun statement1(date: String) : Boolean {
-        val albert = Agent()
-        albert.tellMonth(date)
-        return (!albert.know() &amp;&amp; albert.possibilities.all {
-            val bernard = Agent()
-            bernard.tellDay(it)
-            !bernard.know()
-        })
-    }
-
-    fun statement2(date: String) : Boolean {
+<pre><code>fun statement1(date: String) : Boolean {
+    val albert = Agent()
+    albert.tellMonth(date)
+    return (!albert.know() &amp;&amp; albert.possibilities.all {
         val bernard = Agent()
-        bernard.tellDay(date)
-        val knowsAtFirst = bernard.know()
-        bernard.tellStatement(::statement1)
-        val knowsGivenStatement1 = bernard.know()
-        return !knowsAtFirst &amp;&amp; knowsGivenStatement1
-    }
+        bernard.tellDay(it)
+        !bernard.know()
+    })
+}
 
-    fun statement3(date: String) : Boolean {
-        val albert = Agent()
-        albert.tellMonth(date)
-        albert.tellStatement(::statement2)
-        return albert.know()
-    }
+fun statement2(date: String) : Boolean {
+    val bernard = Agent()
+    bernard.tellDay(date)
+    val knowsAtFirst = bernard.know()
+    bernard.tellStatement(::statement1)
+    val knowsGivenStatement1 = bernard.know()
+    return !knowsAtFirst &amp;&amp; knowsGivenStatement1
+}
 
-    val problemSolver = Agent() // this is us!
+fun statement3(date: String) : Boolean {
+    val albert = Agent()
+    albert.tellMonth(date)
+    albert.tellStatement(::statement2)
+    return albert.know()
+}
+</code></pre>
 
+<p>Our journey:</p>
+
+<pre><code>fun main(args: Array&lt;String&gt;) {
+    val problemSolver = Agent()
     for (statement in listOf(::statement1, ::statement2, ::statement3)) {
         problemSolver.tellStatement(statement)
         if (problemSolver.know()) {
@@ -144,8 +157,14 @@ fun main(args: Array&lt;String&gt;) {
             break
         }
         else {
-            println(&quot;We've heard ${statement.name} and we don't know the solution yet, &quot; +
-                    &quot;but the possibilities are ${problemSolver.possibilities}&quot;)
+            if (problemSolver.possibilities.isEmpty()) {
+                println(&quot;We've heard ${statement.name} and now there are no possibilities left!&quot;)
+                break
+            }
+            else {
+                println(&quot;We've heard ${statement.name} and we don't know the solution yet, &quot; +
+                        &quot;but the possibilities are ${problemSolver.possibilities}&quot;)
+            }
         }
     }
 }
