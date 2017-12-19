@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://snakey1980.github.io/posts/cheryl/</loc>
+    <lastmod>2017-12-19T12:57:55-05:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://snakey1980.github.io/posts/secret-santa/</loc>
     <lastmod>2017-11-13T19:49:44-05:00</lastmod>
   </url>
@@ -14,7 +19,7 @@
   
   <url>
     <loc>http://snakey1980.github.io/posts/</loc>
-    <lastmod>2017-11-13T19:49:44-05:00</lastmod>
+    <lastmod>2017-12-19T12:57:55-05:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -25,7 +30,7 @@
   
   <url>
     <loc>http://snakey1980.github.io/</loc>
-    <lastmod>2017-11-13T19:49:44-05:00</lastmod>
+    <lastmod>2017-12-19T12:57:55-05:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -6,10 +6,19 @@
     <description>Recent content on snakey1980&#39;s GitHub Pages</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 13 Nov 2017 19:49:44 -0500</lastBuildDate>
+    <lastBuildDate>Tue, 19 Dec 2017 12:57:55 -0500</lastBuildDate>
     
 	<atom:link href="http://snakey1980.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Cheryl&#39;s Birthday</title>
+      <link>http://snakey1980.github.io/posts/cheryl/</link>
+      <pubDate>Tue, 19 Dec 2017 12:57:55 -0500</pubDate>
+      
+      <guid>http://snakey1980.github.io/posts/cheryl/</guid>
+      <description>Cheryl&amp;rsquo;s Birthday was fun a few years ago. Even more fun is Peter Norvig&amp;rsquo;s treatment of it with Python. What follows here is just straight up copied from Norvig reimplemented in Kotlin. Kotlin is quite nice here as it&amp;rsquo;s more natural to use types and some OO and you get the quite satisfying idea of Albert, Bernard and us (the one solving the problem) being the same type of thing.</description>
+    </item>
     
     <item>
       <title>Secret Santa</title>
