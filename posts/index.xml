@@ -6,10 +6,21 @@
     <description>Recent content in Posts on snakey1980&#39;s GitHub Pages</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 19 Dec 2017 12:57:55 -0500</lastBuildDate>
+    <lastBuildDate>Fri, 22 Dec 2017 16:45:09 -0500</lastBuildDate>
     
 	<atom:link href="http://snakey1980.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Pirates</title>
+      <link>http://snakey1980.github.io/posts/pirates/</link>
+      <pubDate>Fri, 22 Dec 2017 16:45:09 -0500</pubDate>
+      
+      <guid>http://snakey1980.github.io/posts/pirates/</guid>
+      <description>Like Cheryl&amp;rsquo;s Birthday this Pirates Problem is more fun to program than to reason about. We are trying to implement
+fun distribute(coins: Int, pirates: Int) : List&amp;lt;Int&amp;gt;  which will return the captain&amp;rsquo;s choice of distribution of coins to pirates.
+No explicit working backwards is required, we just need to think like a Pirate. Given his coins, the Pirate will ask himself &amp;ldquo;what is the minimum I have to do to get the votes I need and not get killed?</description>
+    </item>
     
     <item>
       <title>Cheryl&#39;s Birthday</title>
