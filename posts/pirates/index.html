@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta name='description' content='Like Cheryl&rsquo;s Birthday this Pirates Problem is more fun to program than to reason about. We are trying to implement
+fun distribute(coins: Int, pirates: Int) : List&lt;Int&gt;  which will return the captain&rsquo;s choice of distribution of coins to pirates.
+No explicit working backwards is required, we just need to think like a Pirate. Given his coins, the Pirate will ask himself &ldquo;what is the minimum I have to do to get the votes I need and not get killed?'>
+
+<meta property='og:title' content='Pirates • snakey1980&#39;s GitHub Pages'>
+<meta property='og:description' content='Like Cheryl&rsquo;s Birthday this Pirates Problem is more fun to program than to reason about. We are trying to implement
+fun distribute(coins: Int, pirates: Int) : List&lt;Int&gt;  which will return the captain&rsquo;s choice of distribution of coins to pirates.
+No explicit working backwards is required, we just need to think like a Pirate. Given his coins, the Pirate will ask himself &ldquo;what is the minimum I have to do to get the votes I need and not get killed?'>
+<meta property='og:url' content='http://snakey1980.github.io/posts/pirates/'>
+<meta property='og:site_name' content='snakey1980&#39;s GitHub Pages'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:published_time' content='2017-12-22T16:45:09-05:00'/><meta property='article:modified_time' content='2017-12-22T16:45:09-05:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.30.2" />
+
+  <title>Pirates • snakey1980&#39;s GitHub Pages</title>
+  <link rel='canonical' href='http://snakey1980.github.io/posts/pirates/'>
+  
+  
+  <link rel='icon' href='/favicon.ico'>
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700&subset=latin'>
+<link rel='stylesheet' href='/assets/css/main.77da63e1.css'>
+</head>
+
+
+<body class='page type-posts'>
+  <div class='site'>
+
+    <a class='screen-reader' href='#main'>Skip to Content</a>
+
+    <header id='header' class='header-container'>
+      <div class='header site-header'>
+        <nav id='main-menu' class='main-menu-container' aria-label='Main Menu'>
+  <ul class='main-menu'>
+  
+  </ul>
+</nav>
+
+        <div class='header-info'>
+          
+          <p class='site-title title'>snakey1980&#39;s GitHub Pages</p>
+          
+          <p class='site-description subtitle'></p>
+        </div>
+      </div>
+    </header>
+
+
+<main id='main' class='main'>
+  <article lang='en' class='entry'>
+    <header class='header-container'>
+  <div class='header entry-header'>
+    <div class='header-info'>
+      <h1 class='title'>Pirates</h1>
+      
+
+    </div>
+    
+<div class='meta'>
+  <span class='posted-on'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+  <line x1="16" y1="2" x2="16" y2="6"/>
+  <line x1="8" y1="2" x2="8" y2="6"/>
+  <line x1="3" y1="10" x2="21" y2="10"/>
+  
+</svg>
+<span class='screen-reader'>Posted on </span>
+  <time class='date' datetime='2017-12-22T16:45:09-05:00'>2017, Dec 22</time>
+</span>
+
+  
+  
+
+</div>
+
+
+  </div>
+</header>
+
+    
+    
+
+    <div class='entry-content'>
+  <p>Like <a href="https://snakey1980.github.io/posts/cheryl/">Cheryl&rsquo;s Birthday</a> this <a href="https://en.wikipedia.org/wiki/Pirate_game">Pirates Problem</a> is more fun to program than to reason about.  We are trying to implement</p>
+
+<pre><code>fun distribute(coins: Int, pirates: Int) : List&lt;Int&gt;
+</code></pre>
+
+<p>which will return the captain&rsquo;s choice of distribution of coins to pirates.</p>
+
+<p>No explicit working backwards is required, we just need to think like a Pirate.  Given his coins, the Pirate will ask himself &ldquo;what is the minimum I have to do to get the votes I need and not get killed?&rdquo; which leads him to think like a subordinate and ask himself &ldquo;what happens if the captain dies and what could the captain give me that would be better?&rdquo;.  The captain can then work out the &ldquo;price&rdquo; of each vote and &ldquo;buy&rdquo; as many as he needs to, starting with the cheapest.</p>
+
+<p>So we start off assuming we get all the coins and everyone else gets zero.  As we go along we can move coins from our position to others.</p>
+
+<pre><code>val result = listOf(coins).plus((1..(pirates - 1)).map { 0 }).toMutableList()  // e.g. [100, 0, 0, 0, 0]
+</code></pre>
+
+<p>Next, how many votes do we need to buy?</p>
+
+<pre><code>val votesNeeded = (pirates - 1) / 2
+</code></pre>
+
+<p>This could be 0 if there are only one or two pirates (as captain has casting vote).  Otherwise, we need to buy some votes:</p>
+
+<pre><code>val caseIfWeDie = distribute(coins, pirates - 1).toList()
+val cheapestVotes = caseIfWeDie.mapIndexed { index, i -&gt; Pair(index, i) }
+            .sortedBy { it.second }.map { it.first }.take(votesNeeded)
+</code></pre>
+
+<p>So we calculate what happens if we die, then order our subordinates by how well they do out of that, from worst to best.  The ones who would do worst are the cheapest votes.  To buy any vote, we need to give them more money than they would get in the us dying case:</p>
+
+<pre><code>cheapestVotes.forEach {
+    val valueToTurnVote = caseIfWeDie[it] + 1
+    if (result[0] &gt;= valueToTurnVote) {
+        result[it + 1] = valueToTurnVote
+        result[0] -= valueToTurnVote
+    }
+}    
+</code></pre>
+
+<p>We take the vote buying money out of our cut, so long as we have enough.  And we&rsquo;re done!  Putting it all together:</p>
+
+<pre><code>fun distribute(coins: Int, pirates: Int) : List&lt;Int&gt; {
+    val result = listOf(coins).plus((1..(pirates - 1)).map { 0 }).toMutableList()
+    val votesNeeded = (pirates - 1) / 2
+    if (votesNeeded &gt; 0) {
+        val caseIfWeDie = distribute(coins, pirates - 1).toList()
+        val cheapestVotes = caseIfWeDie.mapIndexed { index, i -&gt; Pair(index, i) }
+                .sortedBy { it.second }.map { it.first }.take(votesNeeded)
+        cheapestVotes.forEach {
+            val valueToTurnVote = caseIfWeDie[it] + 1
+            if (result[0] &gt;= valueToTurnVote) {
+                result[it + 1] = valueToTurnVote
+                result[0] -= valueToTurnVote
+            }
+        }
+    }
+    return result
+}
+</code></pre>
+
+<p>And</p>
+
+<pre><code>println(distribute(100, 5)) // prints [98, 0, 1, 0, 1]
+</code></pre>
+
+</div>
+
+    
+<footer class='entry-footer-container'>
+  <div class='entry-footer'>
+  
+  </div>
+</footer>
+
+
+  </article>
+  
+<nav class='entry-nav-container'>
+  <div class='entry-nav'><div class='prev-entry'>
+      <a href='/posts/cheryl/'>
+        <span aria-hidden='true'><svg class='icon' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+  
+  <line x1="20" y1="12" x2="4" y2="12"/>
+  <polyline points="10 18 4 12 10 6"/>
+  
+</svg>
+ Previous</span>
+        <span class='screen-reader'>Previous post: </span>Cheryl&#39;s Birthday</a>
+    </div></div>
+</nav>
+
+  
+</main>
+
+    <footer id='footer' class='footer-container'>
+      <div class='footer'>
+        <div class='social-menu-container'>
+  <nav aria-label='Social Menu'>
+    <ul class='social-menu'></ul>
+  </nav>
+</div>
+        <div class='copyright'>
+  <p>
+  </p>
+</div>
+
+      </div>
+    </footer>
+
+  </div><script src='/assets/js/main.5871befd.js'></script></body>
+
+</html>
+
