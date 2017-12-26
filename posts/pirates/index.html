@@ -102,7 +102,7 @@
 
 <p>which will return the captain&rsquo;s proposal given the numbers of coins and pirates.</p>
 
-<p>No explicit working backwards is required, we just need to think like a Pirate.  Given his coins, the Pirate will ask himself &ldquo;what is the minimum I have to do to get the votes I need and not get killed?&rdquo; which leads him to think like a subordinate and ask himself &ldquo;what happens if the captain dies and what could the captain give me that would be better?&rdquo;.  The captain can then work out the &ldquo;price&rdquo; of each vote and &ldquo;buy&rdquo; as many as he needs to, starting with the cheapest.</p>
+<p>No explicit working backwards is required, we just need to think like a pirate.  Given his coins, the captain will ask himself &ldquo;what is the minimum I have to do to get the votes I need and not get killed?&rdquo; which leads him to think like a subordinate and ask himself &ldquo;what happens if the captain dies and what could the captain give me that would be better?&rdquo;.  The captain can then work out the &ldquo;price&rdquo; of each vote and &ldquo;buy&rdquo; as many as he needs to, starting with the cheapest.</p>
 
 <p>So we start off assuming we get all the coins and everyone else gets zero.  As we go along we can move coins from our position to others.</p>
 
@@ -156,6 +156,106 @@ val cheapestVotes = caseIfWeDie.mapIndexed { index, i -&gt; Pair(index, i) }
 <p>And here&rsquo;s the answer to the 5, 100 case:</p>
 
 <pre><code>println(proposeDistribution(100, 5)) // prints [98, 0, 1, 0, 1]
+</code></pre>
+
+<p>In this case the proposal is the best one possible and also will not result in a mutiny.  But it&rsquo;s possible that the captain can do his best but still come up with a distribution that produces a mutiny.  Let&rsquo;s say we have just one coin:</p>
+
+<table>
+<thead>
+<tr>
+<th>Pirates</th>
+<th style="text-align:right">Proposal</th>
+<th>Votes for - against</th>
+<th>Mutiny?</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>7</td>
+<td style="text-align:right">[0, 1, 0, 0, 0, 0, 0]</td>
+<td>2 - 5</td>
+<td>yes</td>
+</tr>
+
+<tr>
+<td>6</td>
+<td style="text-align:right">[0, 1, 0, 0, 0, 0]</td>
+<td>2 - 4</td>
+<td>yes</td>
+</tr>
+
+<tr>
+<td>5</td>
+<td style="text-align:right">[0, 1, 0, 0, 0]</td>
+<td>2 - 3</td>
+<td>yes</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td style="text-align:right">[0, 1, 0, 0]</td>
+<td>2 - 2</td>
+<td>no</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td style="text-align:right">[0, 0, 1]</td>
+<td>2 - 1</td>
+<td>no</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td style="text-align:right">[1, 0]</td>
+<td>1 - 1</td>
+<td>no</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td style="text-align:right">[1]</td>
+<td>1 - 0</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+
+<p>If there are 5 or more pirates then we can&rsquo;t avoid a mutiny, and giving the coin to the first subordinate is pointless and just happens to come out of our algorithm because of the order of our pirates.</p>
+
+<p>In these cases the captain isn&rsquo;t getting any of his three favorite things.  We need to know his fourth favorite thing to determine what the algorithm should do.  For example we could say</p>
+
+<blockquote>
+<p>After staying alive, getting money and killing pirates, a pirate&rsquo;s favorite thing is expressing greed through defiant, provocative gestures</p>
+</blockquote>
+
+<p>We can add this to our implementation by calculating whether or not we have enough coins to buy all the votes we need and only distributing coins if we do:</p>
+
+<pre><code>fun proposeDistribution(coins: Int, pirates: Int) : List&lt;Int&gt; {
+    val result = listOf(coins).plus((1..(pirates - 1)).map { 0 }).toMutableList()
+    val votesNeeded = (pirates - 1) / 2
+    if (votesNeeded &gt; 0) {
+        val caseIfWeDie = proposeDistribution(coins, pirates - 1).toList()
+        val cheapestVotesAndValuesToTurnThem = caseIfWeDie.mapIndexed { index, i -&gt; Pair(index, i + 1) }
+                .sortedBy { it.second }.take(votesNeeded)
+        if (cheapestVotesAndValuesToTurnThem.map { it.second }.sum() &lt;= result[0]) {
+            cheapestVotesAndValuesToTurnThem.forEach {
+                if (result[0] &gt;= it.second) {
+                    result[it.first + 1] = it.second
+                    result[0] -= it.second
+                }
+            }
+        }
+    }
+    return result
+}
+</code></pre>
+
+<p>Then:</p>
+
+<pre><code>println(proposeDistribution(1, 7)) // prints [1, 0, 0, 0, 0, 0, 0]
 </code></pre>
 
 </div>
