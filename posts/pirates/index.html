@@ -4,14 +4,12 @@
 <head>
   <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<meta name='description' content='Like Cheryl&rsquo;s Birthday this Pirates Problem is more fun to program than to reason about. We are trying to implement
-fun distribute(coins: Int, pirates: Int) : List&lt;Int&gt;  which will return the captain&rsquo;s choice of distribution of coins to pirates.
-No explicit working backwards is required, we just need to think like a Pirate. Given his coins, the Pirate will ask himself &ldquo;what is the minimum I have to do to get the votes I need and not get killed?'>
+<meta name='description' content='Like Cheryl&rsquo;s Birthday this Pirates Problem is more fun to program than to work out by hand. The problem goes like this:
+ It happens that pirates often acquire coins and need to share them out amongst themselves. The way they do this is that the captain &ndash; there is always strict seniority within any group of pirates &ndash; proposes a distribution and the pirates vote on it, the captain having a casting vote.'>
 
 <meta property='og:title' content='Pirates • snakey1980&#39;s GitHub Pages'>
-<meta property='og:description' content='Like Cheryl&rsquo;s Birthday this Pirates Problem is more fun to program than to reason about. We are trying to implement
-fun distribute(coins: Int, pirates: Int) : List&lt;Int&gt;  which will return the captain&rsquo;s choice of distribution of coins to pirates.
-No explicit working backwards is required, we just need to think like a Pirate. Given his coins, the Pirate will ask himself &ldquo;what is the minimum I have to do to get the votes I need and not get killed?'>
+<meta property='og:description' content='Like Cheryl&rsquo;s Birthday this Pirates Problem is more fun to program than to work out by hand. The problem goes like this:
+ It happens that pirates often acquire coins and need to share them out amongst themselves. The way they do this is that the captain &ndash; there is always strict seniority within any group of pirates &ndash; proposes a distribution and the pirates vote on it, the captain having a casting vote.'>
 <meta property='og:url' content='http://snakey1980.github.io/posts/pirates/'>
 <meta property='og:site_name' content='snakey1980&#39;s GitHub Pages'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:published_time' content='2017-12-22T16:45:09-05:00'/><meta property='article:modified_time' content='2017-12-22T16:45:09-05:00'/><meta name='twitter:card' content='summary'>
@@ -87,12 +85,22 @@ No explicit working backwards is required, we just need to think like a Pirate. 
     
 
     <div class='entry-content'>
-  <p>Like <a href="https://snakey1980.github.io/posts/cheryl/">Cheryl&rsquo;s Birthday</a> this <a href="https://en.wikipedia.org/wiki/Pirate_game">Pirates Problem</a> is more fun to program than to reason about.  We are trying to implement</p>
+  <p>Like <a href="https://snakey1980.github.io/posts/cheryl/">Cheryl&rsquo;s Birthday</a> this <a href="https://en.wikipedia.org/wiki/Pirate_game">Pirates Problem</a> is more fun to program than to work out by hand.  The problem goes like this:</p>
 
-<pre><code>fun distribute(coins: Int, pirates: Int) : List&lt;Int&gt;
+<blockquote>
+<p>It happens that pirates often acquire coins and need to share them out amongst themselves.  The way they do this is that the captain &ndash; there is always strict seniority within any group of pirates &ndash; proposes a distribution and the pirates vote on it, the captain having a casting vote.  If the distribution is approved it is implemented, otherwise a mutiny ensues and the new captain proposes a new distribution.</p>
+
+<p>Pirates are logical and don&rsquo;t trust each other and their favorite things are, in order: staying alive, getting coins, and killing other pirates.</p>
+
+<p>In the case of 5 pirates and 100 coins, how will the captain propose to distribute them?</p>
+</blockquote>
+
+<p>So we are trying to implement</p>
+
+<pre><code>fun proposeDistribution(coins: Int, pirates: Int) : List&lt;Int&gt;
 </code></pre>
 
-<p>which will return the captain&rsquo;s choice of distribution of coins to pirates.</p>
+<p>which will return the captain&rsquo;s proposal given the numbers of coins and pirates.</p>
 
 <p>No explicit working backwards is required, we just need to think like a Pirate.  Given his coins, the Pirate will ask himself &ldquo;what is the minimum I have to do to get the votes I need and not get killed?&rdquo; which leads him to think like a subordinate and ask himself &ldquo;what happens if the captain dies and what could the captain give me that would be better?&rdquo;.  The captain can then work out the &ldquo;price&rdquo; of each vote and &ldquo;buy&rdquo; as many as he needs to, starting with the cheapest.</p>
 
@@ -106,9 +114,9 @@ No explicit working backwards is required, we just need to think like a Pirate. 
 <pre><code>val votesNeeded = (pirates - 1) / 2
 </code></pre>
 
-<p>This could be 0 if there are only one or two pirates (as captain has casting vote).  Otherwise, we need to buy some votes:</p>
+<p>This could be 0 if there are only one or two pirates.  Otherwise, we need to buy some votes:</p>
 
-<pre><code>val caseIfWeDie = distribute(coins, pirates - 1).toList()
+<pre><code>val caseIfWeDie = proposeDistribution(coins, pirates - 1).toList()
 val cheapestVotes = caseIfWeDie.mapIndexed { index, i -&gt; Pair(index, i) }
             .sortedBy { it.second }.map { it.first }.take(votesNeeded)
 </code></pre>
@@ -126,7 +134,7 @@ val cheapestVotes = caseIfWeDie.mapIndexed { index, i -&gt; Pair(index, i) }
 
 <p>We take the vote buying money out of our cut, so long as we have enough.  And we&rsquo;re done!  Putting it all together:</p>
 
-<pre><code>fun distribute(coins: Int, pirates: Int) : List&lt;Int&gt; {
+<pre><code>fun proposeDistribution(coins: Int, pirates: Int) : List&lt;Int&gt; {
     val result = listOf(coins).plus((1..(pirates - 1)).map { 0 }).toMutableList()
     val votesNeeded = (pirates - 1) / 2
     if (votesNeeded &gt; 0) {
@@ -145,9 +153,9 @@ val cheapestVotes = caseIfWeDie.mapIndexed { index, i -&gt; Pair(index, i) }
 }
 </code></pre>
 
-<p>And</p>
+<p>And here&rsquo;s the answer to the 5, 100 case:</p>
 
-<pre><code>println(distribute(100, 5)) // prints [98, 0, 1, 0, 1]
+<pre><code>println(proposeDistribution(100, 5)) // prints [98, 0, 1, 0, 1]
 </code></pre>
 
 </div>
