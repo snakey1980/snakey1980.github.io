@@ -6,10 +6,21 @@
     <description>Recent content in Posts on snakey1980&#39;s GitHub Pages</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 22 Dec 2017 16:45:09 -0500</lastBuildDate>
+    <lastBuildDate>Wed, 02 May 2018 17:00:26 -0400</lastBuildDate>
     
 	<atom:link href="http://snakey1980.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Dobble Spot It</title>
+      <link>http://snakey1980.github.io/posts/dobble-spot-it/</link>
+      <pubDate>Wed, 02 May 2018 17:00:26 -0400</pubDate>
+      
+      <guid>http://snakey1980.github.io/posts/dobble-spot-it/</guid>
+      <description>Spot It, also sold as Dobble is a fun card game with a deck of around 50 cards printed with 8 symbols each, with one key rule: every possible pair of cards has exactly one symbol in common.
+This leads to questions like
+ What&amp;rsquo;s the maximum number of cards there could be in the deck? With the number of cards maxed, how many symbols are there in total? How can you construct a deck which conforms to the rule?</description>
+    </item>
     
     <item>
       <title>Pirates</title>
