@@ -6,10 +6,21 @@
     <description>Recent content in Posts on snakey1980&#39;s GitHub Pages</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 02 May 2018 17:00:26 -0400</lastBuildDate>
+    <lastBuildDate>Sun, 25 Nov 2018 10:57:28 -0500</lastBuildDate>
     
 	<atom:link href="http://snakey1980.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Hangman</title>
+      <link>http://snakey1980.github.io/posts/hangman/</link>
+      <pubDate>Sun, 25 Nov 2018 10:57:28 -0500</pubDate>
+      
+      <guid>http://snakey1980.github.io/posts/hangman/</guid>
+      <description>A fairly effective way to play Hangman offense:
+ Consider all words that match the pattern and don&amp;rsquo;t contain guesses that have been denied Guess the letter not guessed already that appears in most of these words  Here&amp;rsquo;s some code that plays like that:
+class Player(pattern: List&amp;lt;Char&amp;gt;) { private val pattern = pattern.toMutableList() private val possibleWords = wordsOfLengthCachy(pattern.size).toMutableSet() fun guess(): Char { return (&#39;A&#39;..&#39;Z&#39;) .filter { it !in pattern } .</description>
+    </item>
     
     <item>
       <title>Spot It aka Dobble</title>
