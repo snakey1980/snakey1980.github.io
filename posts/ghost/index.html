@@ -5,11 +5,13 @@
   <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 <meta name='description' content='Here&rsquo;s a program that helps (you cheat) at Ghost. I must look into Lexicant some time too.
-fun main(args: Array&lt;String&gt;) { repl() } val words = File(&quot;/path/to/your/wordlist.txt&quot;).readLines().toSet() fun kills(given: String, word: String, players: Int): Boolean { val remaining = word.removePrefix(given).length return word.length &gt; 2 &amp;&amp; (remaining % players == 1) } fun possibleWords(given: String): Set&lt;String&gt; { return words.asSequence().filter { it.startsWith(given) &amp;&amp; it.length &gt; given.length }.toSet() } fun wordsThatKill(given: String, possibleWords: Set&lt;String&gt;, players: Int): Set&lt;String&gt; { val killers = possibleWords.'>
+UPDATE: this may not be ideal. I just had it play itself with some strange results. I will look into it and may revise it.
+fun main(args: Array&lt;String&gt;) { repl() } val words = File(&quot;/path/to/your/wordlist.txt&quot;).readLines().toSet() fun kills(given: String, word: String, players: Int): Boolean { val remaining = word.removePrefix(given).length return word.length &gt; 2 &amp;&amp; (remaining % players == 1) } fun possibleWords(given: String): Set&lt;String&gt; { return words.'>
 
 <meta property='og:title' content='Ghost • snakey1980&#39;s GitHub Pages'>
 <meta property='og:description' content='Here&rsquo;s a program that helps (you cheat) at Ghost. I must look into Lexicant some time too.
-fun main(args: Array&lt;String&gt;) { repl() } val words = File(&quot;/path/to/your/wordlist.txt&quot;).readLines().toSet() fun kills(given: String, word: String, players: Int): Boolean { val remaining = word.removePrefix(given).length return word.length &gt; 2 &amp;&amp; (remaining % players == 1) } fun possibleWords(given: String): Set&lt;String&gt; { return words.asSequence().filter { it.startsWith(given) &amp;&amp; it.length &gt; given.length }.toSet() } fun wordsThatKill(given: String, possibleWords: Set&lt;String&gt;, players: Int): Set&lt;String&gt; { val killers = possibleWords.'>
+UPDATE: this may not be ideal. I just had it play itself with some strange results. I will look into it and may revise it.
+fun main(args: Array&lt;String&gt;) { repl() } val words = File(&quot;/path/to/your/wordlist.txt&quot;).readLines().toSet() fun kills(given: String, word: String, players: Int): Boolean { val remaining = word.removePrefix(given).length return word.length &gt; 2 &amp;&amp; (remaining % players == 1) } fun possibleWords(given: String): Set&lt;String&gt; { return words.'>
 <meta property='og:url' content='http://snakey1980.github.io/posts/ghost/'>
 <meta property='og:site_name' content='snakey1980&#39;s GitHub Pages'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:published_time' content='2018-12-05T12:00:54-05:00'/><meta property='article:modified_time' content='2018-12-05T12:00:54-05:00'/><meta name='twitter:card' content='summary'>
@@ -86,6 +88,8 @@ fun main(args: Array&lt;String&gt;) { repl() } val words = File(&quot;/path/to/y
 
     <div class='entry-content'>
   <p>Here&rsquo;s a program that helps (you cheat) at <a href="https://en.wikipedia.org/wiki/Ghost_(game)">Ghost</a>.  I must look into Lexicant some time too.</p>
+
+<p>UPDATE: this may not be ideal.  I just had it play itself with some strange results.  I will look into it and may revise it.</p>
 
 <pre><code>fun main(args: Array&lt;String&gt;) {
     repl()
