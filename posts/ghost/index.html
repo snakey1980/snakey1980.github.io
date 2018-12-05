@@ -4,13 +4,11 @@
 <head>
   <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<meta name='description' content='Here&rsquo;s a program that helps (you cheat) at Ghost. I must look into Lexicant some time too.
-UPDATE: this may not be ideal. I just had it play itself with some strange results. I will look into it and may revise it.
+<meta name='description' content='Here&rsquo;s a program that helps (you cheat) at Ghost. I think I have a bug because it seems to win more from starting than most people think it should (could be the dictionary&rsquo;s fault though). I must look into Lexicant some time too.
 fun main(args: Array&lt;String&gt;) { repl() } val words = File(&quot;/path/to/your/wordlist.txt&quot;).readLines().toSet() fun kills(given: String, word: String, players: Int): Boolean { val remaining = word.removePrefix(given).length return word.length &gt; 2 &amp;&amp; (remaining % players == 1) } fun possibleWords(given: String): Set&lt;String&gt; { return words.'>
 
 <meta property='og:title' content='Ghost • snakey1980&#39;s GitHub Pages'>
-<meta property='og:description' content='Here&rsquo;s a program that helps (you cheat) at Ghost. I must look into Lexicant some time too.
-UPDATE: this may not be ideal. I just had it play itself with some strange results. I will look into it and may revise it.
+<meta property='og:description' content='Here&rsquo;s a program that helps (you cheat) at Ghost. I think I have a bug because it seems to win more from starting than most people think it should (could be the dictionary&rsquo;s fault though). I must look into Lexicant some time too.
 fun main(args: Array&lt;String&gt;) { repl() } val words = File(&quot;/path/to/your/wordlist.txt&quot;).readLines().toSet() fun kills(given: String, word: String, players: Int): Boolean { val remaining = word.removePrefix(given).length return word.length &gt; 2 &amp;&amp; (remaining % players == 1) } fun possibleWords(given: String): Set&lt;String&gt; { return words.'>
 <meta property='og:url' content='http://snakey1980.github.io/posts/ghost/'>
 <meta property='og:site_name' content='snakey1980&#39;s GitHub Pages'>
@@ -87,9 +85,7 @@ fun main(args: Array&lt;String&gt;) { repl() } val words = File(&quot;/path/to/y
     
 
     <div class='entry-content'>
-  <p>Here&rsquo;s a program that helps (you cheat) at <a href="https://en.wikipedia.org/wiki/Ghost_(game)">Ghost</a>.  I must look into Lexicant some time too.</p>
-
-<p>UPDATE: this may not be ideal.  I just had it play itself with some strange results.  I will look into it and may revise it.</p>
+  <p>Here&rsquo;s a program that helps (you cheat) at <a href="https://en.wikipedia.org/wiki/Ghost_(game)">Ghost</a>.  I think I have a bug because it seems to win more from starting than most people think it should (could be the dictionary&rsquo;s fault though).  I must look into Lexicant some time too.</p>
 
 <pre><code>fun main(args: Array&lt;String&gt;) {
     repl()
@@ -130,10 +126,14 @@ fun play(given: String, players: Int): Response {
     }
     val wordsThatKillMe = wordsThatKill(given, possibleWords, players)
     val safeWords = possibleWords.minus(wordsThatKillMe)
+    val killerWords = safeWords.filter { word -&gt;
+        val start = word.take(given.length + 1)
+        wordsThatKillMe.none { it.startsWith(start) }
+    }
     return if (safeWords.isEmpty()) {
         Surrender(wordsThatKillMe)
     } else {
-        val safeWord = safeWords.sorted().first()
+        val safeWord = killerWords.sorted().firstOrNull()?: safeWords.sorted().first()
         Letter(safeWord.removePrefix(given).first(), safeWord)
     }
 }
@@ -156,6 +156,11 @@ fun repl() {
         println(&quot;Given '$given' and $players players, I recommend you ${play(given, players)}\n&quot;)
     }
 }
+</code></pre>
+
+<p>I had it play itself.  Out of all the possible starting letters, 9 give a win, being</p>
+
+<pre><code>b, f, h, j, q, s, w, x, z
 </code></pre>
 
 </div>
