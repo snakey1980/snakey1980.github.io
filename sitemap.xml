@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://snakey1980.github.io/posts/ghost/</loc>
+    <lastmod>2018-12-05T12:00:54-05:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://snakey1980.github.io/posts/hangman/</loc>
     <lastmod>2018-11-25T10:57:28-05:00</lastmod>
   </url>
@@ -34,7 +39,7 @@
   
   <url>
     <loc>http://snakey1980.github.io/posts/</loc>
-    <lastmod>2018-11-25T10:57:28-05:00</lastmod>
+    <lastmod>2018-12-05T12:00:54-05:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -45,7 +50,7 @@
   
   <url>
     <loc>http://snakey1980.github.io/</loc>
-    <lastmod>2018-11-25T10:57:28-05:00</lastmod>
+    <lastmod>2018-12-05T12:00:54-05:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -6,10 +6,20 @@
     <description>Recent content on snakey1980&#39;s GitHub Pages</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 25 Nov 2018 10:57:28 -0500</lastBuildDate>
+    <lastBuildDate>Wed, 05 Dec 2018 12:00:54 -0500</lastBuildDate>
     
 	<atom:link href="http://snakey1980.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Ghost</title>
+      <link>http://snakey1980.github.io/posts/ghost/</link>
+      <pubDate>Wed, 05 Dec 2018 12:00:54 -0500</pubDate>
+      
+      <guid>http://snakey1980.github.io/posts/ghost/</guid>
+      <description>Here&amp;rsquo;s a program that helps (you cheat) at Ghost. I must look into Lexicant some time too.
+fun main(args: Array&amp;lt;String&amp;gt;) { repl() } val words = File(&amp;quot;/path/to/your/wordlist.txt&amp;quot;).readLines().toSet() fun kills(given: String, word: String, players: Int): Boolean { val remaining = word.removePrefix(given).length return word.length &amp;gt; 2 &amp;amp;&amp;amp; (remaining % players == 1) } fun possibleWords(given: String): Set&amp;lt;String&amp;gt; { return words.asSequence().filter { it.startsWith(given) &amp;amp;&amp;amp; it.length &amp;gt; given.length }.toSet() } fun wordsThatKill(given: String, possibleWords: Set&amp;lt;String&amp;gt;, players: Int): Set&amp;lt;String&amp;gt; { val killers = possibleWords.</description>
+    </item>
     
     <item>
       <title>Hangman</title>
