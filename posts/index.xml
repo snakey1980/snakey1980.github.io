@@ -17,8 +17,8 @@
       <pubDate>Wed, 05 Dec 2018 12:00:54 -0500</pubDate>
       
       <guid>http://snakey1980.github.io/posts/ghost/</guid>
-      <description>Here&amp;rsquo;s a program that helps (you cheat) at Ghost. I think I have a bug because it seems to win more from starting than most people think it should (could be the dictionary&amp;rsquo;s fault though). I must look into Lexicant some time too.
-fun main(args: Array&amp;lt;String&amp;gt;) { repl() } val words = File(&amp;quot;/path/to/your/wordlist.txt&amp;quot;).readLines().toSet() fun kills(given: String, word: String, players: Int): Boolean { val remaining = word.removePrefix(given).length return word.length &amp;gt; 2 &amp;amp;&amp;amp; (remaining % players == 1) } fun possibleWords(given: String): Set&amp;lt;String&amp;gt; { return words.</description>
+      <description>Here&amp;rsquo;s code that helps (you cheat) at Ghost. It passes some basic tests but there must be bugs &amp;ndash; I haven&amp;rsquo;t tested it all. It&amp;rsquo;s more complicated than it might be as it works for N players and does not assume the other players are playing perfectly. Run repl() to get responses, or playOut() to see it play itself.
+val WORDS = File(&amp;quot;/path/to/your/dictionary&amp;quot;).readLines().toSet().filter { it.length &amp;gt; 2 } val PARTIAL_WORDS: Set&amp;lt;String&amp;gt; = (0.</description>
     </item>
     
     <item>

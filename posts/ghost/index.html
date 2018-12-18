@@ -4,12 +4,12 @@
 <head>
   <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<meta name='description' content='Here&rsquo;s a program that helps (you cheat) at Ghost. I think I have a bug because it seems to win more from starting than most people think it should (could be the dictionary&rsquo;s fault though). I must look into Lexicant some time too.
-fun main(args: Array&lt;String&gt;) { repl() } val words = File(&quot;/path/to/your/wordlist.txt&quot;).readLines().toSet() fun kills(given: String, word: String, players: Int): Boolean { val remaining = word.removePrefix(given).length return word.length &gt; 2 &amp;&amp; (remaining % players == 1) } fun possibleWords(given: String): Set&lt;String&gt; { return words.'>
+<meta name='description' content='Here&rsquo;s code that helps (you cheat) at Ghost. It passes some basic tests but there must be bugs &ndash; I haven&rsquo;t tested it all. It&rsquo;s more complicated than it might be as it works for N players and does not assume the other players are playing perfectly. Run repl() to get responses, or playOut() to see it play itself.
+val WORDS = File(&quot;/path/to/your/dictionary&quot;).readLines().toSet().filter { it.length &gt; 2 } val PARTIAL_WORDS: Set&lt;String&gt; = (0.'>
 
 <meta property='og:title' content='Ghost • snakey1980&#39;s GitHub Pages'>
-<meta property='og:description' content='Here&rsquo;s a program that helps (you cheat) at Ghost. I think I have a bug because it seems to win more from starting than most people think it should (could be the dictionary&rsquo;s fault though). I must look into Lexicant some time too.
-fun main(args: Array&lt;String&gt;) { repl() } val words = File(&quot;/path/to/your/wordlist.txt&quot;).readLines().toSet() fun kills(given: String, word: String, players: Int): Boolean { val remaining = word.removePrefix(given).length return word.length &gt; 2 &amp;&amp; (remaining % players == 1) } fun possibleWords(given: String): Set&lt;String&gt; { return words.'>
+<meta property='og:description' content='Here&rsquo;s code that helps (you cheat) at Ghost. It passes some basic tests but there must be bugs &ndash; I haven&rsquo;t tested it all. It&rsquo;s more complicated than it might be as it works for N players and does not assume the other players are playing perfectly. Run repl() to get responses, or playOut() to see it play itself.
+val WORDS = File(&quot;/path/to/your/dictionary&quot;).readLines().toSet().filter { it.length &gt; 2 } val PARTIAL_WORDS: Set&lt;String&gt; = (0.'>
 <meta property='og:url' content='http://snakey1980.github.io/posts/ghost/'>
 <meta property='og:site_name' content='snakey1980&#39;s GitHub Pages'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:published_time' content='2018-12-05T12:00:54-05:00'/><meta property='article:modified_time' content='2018-12-05T12:00:54-05:00'/><meta name='twitter:card' content='summary'>
@@ -85,57 +85,100 @@ fun main(args: Array&lt;String&gt;) { repl() } val words = File(&quot;/path/to/y
     
 
     <div class='entry-content'>
-  <p>Here&rsquo;s a program that helps (you cheat) at <a href="https://en.wikipedia.org/wiki/Ghost_(game)">Ghost</a>.  I think I have a bug because it seems to win more from starting than most people think it should (could be the dictionary&rsquo;s fault though).  I must look into Lexicant some time too.</p>
+  <p>Here&rsquo;s code that helps (you cheat) at <a href="https://en.wikipedia.org/wiki/Ghost_(game)">Ghost</a>.  It passes some basic tests but there must be bugs &ndash; I haven&rsquo;t tested it all.  It&rsquo;s more complicated than it might be as it works for N players and does not assume the other players are playing perfectly.  Run repl() to get responses, or playOut() to see it play itself.</p>
 
-<pre><code>fun main(args: Array&lt;String&gt;) {
-    repl()
-}
+<pre><code>val WORDS = File(&quot;/path/to/your/dictionary&quot;).readLines().toSet().filter { it.length &gt; 2 }
 
-val words = File(&quot;/path/to/your/wordlist.txt&quot;).readLines().toSet()
+val PARTIAL_WORDS: Set&lt;String&gt; = (0..WORDS.map { it.length }.max()!!).flatMap { length -&gt; WORDS.filter { it.length &gt;= length }.map { it.substring(0, length) }.toSet() }.toSet()
 
-fun kills(given: String, word: String, players: Int): Boolean {
-    val remaining = word.removePrefix(given).length
-    return word.length &gt; 2 &amp;&amp; (remaining % players == 1)
+interface Response { val thisPlayer: Int }
+data class Challenge(override val thisPlayer: Int, val given: String): Response {
+    override fun toString() = &quot;Player ${thisPlayer + 1}: challenge (no words start with '$given').&quot;
 }
-
-fun possibleWords(given: String): Set&lt;String&gt; {
-    return words.asSequence().filter { it.startsWith(given) &amp;&amp; it.length &gt; given.length }.toSet()
+data class Surrender(override val thisPlayer: Int, val example: String): Response {
+    override fun toString() = &quot;Player ${thisPlayer + 1}: surrender (an example that kills is '$example') or challenge for the hell of it.&quot;
 }
-
-fun wordsThatKill(given: String, possibleWords: Set&lt;String&gt;, players: Int): Set&lt;String&gt; {
-    val killers = possibleWords.filter { word -&gt; kills(given, word, players) }
-    val indirectKillers = possibleWords.filter { killers.any { killer -&gt; it.startsWith(killer) } }
-    return killers.asSequence().plus(indirectKillers).toSet()
+interface Play: Response {
+    val value: Char
 }
-
-interface Response
-data class Challenge(private val given: String): Response {
-    override fun toString() = &quot;challenge (I don't believe any words start with $given)&quot;
+data class PlayPerfect(override val thisPlayer: Int, override val value: Char, private val example: String, private val playerWhoGetsKilled: Int): Play {
+    override fun toString() = &quot;Player ${thisPlayer + 1}: play '$value'.  An example of an ending word is '$example' which kills player ${playerWhoGetsKilled + 1}.&quot;
 }
-data class Surrender(val killers: Set&lt;String&gt;): Response {
-    override fun toString() = &quot;surrender (an example of a word that kills you is ${killers.minBy { it.length }}).  You can challenge if you think your opponent is bluffing.&quot;
+data class PlaySpeculative(override val thisPlayer: Int, override val value: Char, private val example: String, private val playerWhoGetsKilled: Int): Play {
+    override fun toString() = &quot;Player ${thisPlayer + 1}: play '$value'.  We should lose if the other players are playing perfectly, but it's impossible we might end on '$example' which kills ${playerWhoGetsKilled + 1}&quot;
 }
-data class Letter(private val value: Char, private val example: String): Response {
-    override fun toString() = &quot;play '$value' (an example of a safe word is $example)&quot;
+data class PlayVerySpeculative(override val thisPlayer: Int, override val value: Char): Play {
+    override fun toString() = &quot;Player ${thisPlayer + 1}: play '$value'.  We should lose if the other players are playing perfectly because no word starts like this but it's possible they may not challenge.&quot;
 }
 
 fun play(given: String, players: Int): Response {
-    val possibleWords = possibleWords(given)
-    if (possibleWords.isEmpty()) {
-        return Challenge(given)
+    if (players &lt; 2) {
+        throw IllegalArgumentException(&quot;Need at least 2 players&quot;)
     }
-    val wordsThatKillMe = wordsThatKill(given, possibleWords, players)
-    val safeWords = possibleWords.minus(wordsThatKillMe)
-    val killerWords = safeWords.filter { word -&gt;
-        val start = word.take(given.length + 1)
-        wordsThatKillMe.none { it.startsWith(start) }
-    }
-    return if (safeWords.isEmpty()) {
-        Surrender(wordsThatKillMe)
+    val thisPlayer = given.length % players
+    return if (given !in PARTIAL_WORDS) {
+        Challenge(thisPlayer, given)
     } else {
-        val safeWord = killerWords.sorted().firstOrNull()?: safeWords.sorted().first()
-        Letter(safeWord.removePrefix(given).first(), safeWord)
+        val killsWithPerfectPlay = killsWithPerfectPlay(given, players)
+        if (killsWithPerfectPlay == thisPlayer) {
+            val speculativeWord = WORDS.filter { it.startsWith(given) &amp;&amp; whichPlayerGetsKilled(it, players) != thisPlayer }.minWith(compareBy&lt;String&gt; { it.length }.thenBy { it })
+            if (speculativeWord != null) {
+                PlaySpeculative(thisPlayer, speculativeWord[given.length], speculativeWord, whichPlayerGetsKilled(speculativeWord, players))
+            }
+            else {
+                val play = ('a'..'z').firstOrNull { given.plus(it) !in WORDS }
+                if (play != null) {
+                    PlayVerySpeculative(thisPlayer, play)
+                }
+                else {
+                    val destinedWord = WORDS.filter { it.startsWith(given) &amp;&amp; killsWithPerfectPlay(it, players) == thisPlayer }.minWith(compareBy&lt;String&gt; { it.length }.thenBy { it })!!
+                    Surrender(thisPlayer, destinedWord)
+                }
+            }
+        } else {
+            val play = ('a'..'z').filter { given.plus(it) in PARTIAL_WORDS }.first { killsWithPerfectPlay(given.plus(it), players) == killsWithPerfectPlay }
+            val destinedWord = WORDS.filter { it.startsWith(given.plus(play)) &amp;&amp; killsWithPerfectPlay(it, players) == killsWithPerfectPlay }.minWith(compareBy&lt;String&gt; { it.length }.thenBy { it })!!
+            PlayPerfect(thisPlayer, play, destinedWord, killsWithPerfectPlay)
+        }
     }
+}
+
+fun whichPlayerGetsKilled(word: String, players: Int): Int {
+    if (word !in WORDS) {
+        throw IllegalArgumentException(&quot;$word is not a valid Ghost word.&quot;)
+    }
+    var result = (3..word.length).first { word.substring(0, it) in WORDS }
+    while (result &gt; players) {
+        result -= players
+    }
+    return result - 1
+}
+
+fun killsWithPerfectPlay(string: String, players: Int): Int {
+    if (string !in PARTIAL_WORDS) {
+        throw IllegalArgumentException(&quot;$string is not a valid Ghost string.  Someone should have challenged already&quot;)
+    }
+    return if (string in WORDS) {
+        whichPlayerGetsKilled(string, players)
+    } else {
+        val thisPlayer = string.length % players
+        val nextGeneration = ('a'..'z').map { string.plus(it) }.filter { it in PARTIAL_WORDS }.toSet().map { killsWithPerfectPlay(it, players) }
+        val furthest = compareBy&lt;Int&gt; { (thisPlayer - it).sign }.thenBy { it }
+        nextGeneration.filter { it != thisPlayer }.maxWith(furthest)?: thisPlayer
+    }
+}
+
+fun playOut(start: String, players: Int) {
+    generateSequence(start to play(start, players)) { previous -&gt;
+        val (given, response) = previous
+        println(&quot;'$given' -&gt; $response&quot;)
+        if (response is Play) {
+            given.plus(response.value).let { it to play(it, players) }
+        }
+        else {
+            null
+        }
+    }.toList()
 }
 
 fun repl() {
@@ -153,14 +196,9 @@ fun repl() {
         }
         letters
     }.forEach { given -&gt;
-        println(&quot;Given '$given' and $players players, I recommend you ${play(given, players)}\n&quot;)
+        println(&quot;'$given', $players players -&gt; ${play(given, players)}\n&quot;)
     }
 }
-</code></pre>
-
-<p>I had it play itself.  Out of all the possible starting letters, 9 give a win, being</p>
-
-<pre><code>b, f, h, j, q, s, w, x, z
 </code></pre>
 
 </div>
